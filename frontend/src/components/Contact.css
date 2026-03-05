@@ -1,0 +1,235 @@
+/* ============================= */
+/* GLOBAL FIX (VERY IMPORTANT) */
+/* ============================= */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html, body {
+  overflow-x: hidden;
+}
+
+/* ============================= */
+/* MAIN SECTION */
+/* ============================= */
+.contact-section {
+  width: 100%;
+  padding: 100px 20px;
+  background: linear-gradient(135deg, #34353a, #081349);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  font-family: 'Segoe UI', sans-serif;
+}
+
+/* ============================= */
+/* MAP WRAPPER */
+/* ============================= */
+.map-wrapper {
+  width: 100%;
+  max-width: 1200px;
+  border-radius: 20px;
+  overflow: hidden;
+  box-shadow: 0 25px 60px rgba(0,0,0,0.4);
+}
+
+.map-wrapper iframe {
+  width: 100%;
+  height: 500px;
+  border: 0;
+  display: block;
+}
+
+/* ============================= */
+/* CONTACT CARD */
+/* ============================= */
+.contact-card {
+  width: 100%;
+  max-width: 950px;
+  background: #2e4f6a;
+  margin-top: -200px;
+  padding: 50px;
+  border-radius: 20px;
+  box-shadow: 0 30px 70px rgba(0,0,0,0.4);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.contact-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 40px 80px rgba(0,0,0,0.5);
+}
+
+/* ============================= */
+/* TOP INFO SECTION */
+/* ============================= */
+.contact-top {
+  display: flex;
+  justify-content: space-between;
+  gap: 60px;
+  margin-bottom: 40px;
+}
+
+.contact-top h4 {
+  font-size: 13px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: #6c63ff;
+  margin-bottom: 8px;
+  font-weight: 600;
+}
+
+.contact-top p {
+  font-size: 15px;
+  color: #e0e0e0;
+  margin-bottom: 18px;
+  line-height: 1.6;
+}
+
+.contact-top a {
+  text-decoration: none;
+  color: #ffffff;
+  font-weight: 500;
+  transition: 0.3s ease;
+}
+
+.contact-top a:hover {
+  color: #6c63ff;
+}
+
+/* ============================= */
+/* GLOWING ANIMATION KEYFRAMES */
+/* ============================= */
+@keyframes glowGradient {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+/* ============================= */
+/* FORM */
+/* ============================= */
+.contact-form {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.form-row {
+  display: flex;
+  gap: 20px;
+}
+
+/* INPUT & TEXTAREA */
+.contact-form input,
+.contact-form textarea {
+  width: 100%;
+  padding: 15px;
+  border-radius: 10px;
+  border: 2px solid transparent; /* for glow effect */
+  font-size: 14px;
+  background: #1a2a3a;
+  color: #fff;
+  outline: none;
+  transition: all 0.3s ease;
+  background-clip: padding-box;
+  position: relative;
+}
+
+/* GLOWING GRADIENT BORDER */
+.contact-form input:hover,
+.contact-form textarea:hover,
+.contact-form input:focus,
+.contact-form textarea:focus {
+  border-image-slice: 1;
+  border-width: 2px;
+  border-image-source: linear-gradient(270deg, #6c63ff, #ff00ff, #00ffff, #6c63ff);
+  animation: glowGradient 3s ease infinite;
+  box-shadow: 0 0 20px rgba(108, 99, 255, 0.6);
+  transform: scale(1.02);
+}
+
+/* BUTTON */
+.contact-form button {
+  padding: 15px;
+  border: none;
+  border-radius: 10px;
+  background: linear-gradient(270deg, #6c63ff, #ff00ff, #00ffff, #6c63ff);
+  background-size: 600% 600%;
+  color: #fff;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  animation: glowGradient 6s ease infinite;
+}
+
+.contact-form button:hover {
+  transform: translateY(-3px) scale(1.05);
+  box-shadow: 0 0 30px rgba(108, 99, 255, 0.8);
+}
+
+/* ============================= */
+/* TABLET RESPONSIVE */
+/* ============================= */
+@media (max-width: 992px) {
+
+  .contact-card {
+    padding: 35px;
+    margin-top: -80px;
+  }
+
+  .contact-top {
+    flex-direction: column;
+    gap: 30px;
+  }
+
+  .form-row {
+    flex-direction: column;
+  }
+}
+
+/* ============================= */
+/* MOBILE RESPONSIVE */
+/* ============================= */
+@media (max-width: 600px) {
+
+  .contact-section {
+    padding: 70px 15px;
+  }
+
+  .map-wrapper iframe {
+    height: 300px;
+  }
+
+  .contact-card {
+    padding: 25px;
+    margin-top: -60px;
+  }
+
+  .contact-top h4 {
+    font-size: 12px;
+  }
+
+  .contact-top p {
+    font-size: 14px;
+  }
+
+  .contact-form input,
+  .contact-form textarea {
+    font-size: 13px;
+    padding: 13px;
+  }
+
+  .contact-form button {
+    font-size: 14px;
+    padding: 14px;
+  }
+}

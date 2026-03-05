@@ -1,0 +1,156 @@
+/* Container */
+.about-section {
+  width: 100%;
+  padding: 60px 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 60px; /* space between cards */
+  font-family: 'Segoe UI', sans-serif;
+  background: #585481;
+}
+
+/* Card */
+.about-card {
+  position: relative;
+  width: 100%;
+  max-width: 1200px;
+  height: 400px;
+  border-radius: 15px;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  box-shadow: 0 15px 35px rgba(0,0,0,0.2);
+  transition: transform 0.4s ease, box-shadow 0.4s ease;
+  margin: 0 auto;
+}
+
+.about-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 25px 50px rgba(0,0,0,0.3);
+}
+
+/* Image */
+.about-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.5s ease, filter 0.5s ease;
+}
+
+.about-card:hover .about-image {
+  transform: scale(1.05);
+  filter: brightness(65%);
+}
+
+/* Overlay Content - Glassmorphism */
+.about-content {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background: rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(10px);
+  color: #fff;
+  padding: 40px 30px;
+  max-width: 45%;
+  box-shadow: 5px 5px 25px rgba(0,0,0,0.3);
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  opacity: 0;
+  animation: fadeInSlide 1s forwards 0.3s;
+}
+
+/* LEFT or RIGHT overlay */
+.about-content.left {
+  left: 50px;
+  border-radius: 0 20px 20px 0;
+}
+
+.about-content.right {
+  right: 50px;
+  border-radius: 20px 0 0 20px;
+}
+
+/* Headings and underline */
+.about-content h2 {
+  font-size: 36px;
+  margin: 0;
+}
+
+.underline {
+  width: 60px;
+  height: 4px;
+  background-color: #6c63ff;
+  border-radius: 2px;
+  margin-bottom: 10px;
+}
+
+.about-content p {
+  font-size: 16px;
+  line-height: 1.8;
+}
+
+/* Fade-in + slide animation */
+@keyframes fadeInSlide {
+  0% {
+    opacity: 0;
+    transform: translateY(-50%) translateX(-30px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(-50%) translateX(0);
+  }
+}
+
+/* Responsive - Tablets */
+@media (max-width: 992px) {
+  .about-card {
+    height: 350px;
+  }
+  .about-content {
+    max-width: 60%;
+    padding: 25px 20px;
+  }
+  .about-content.left {
+    left: 30px;
+  }
+  .about-content.right {
+    right: 30px;
+  }
+  .about-content h2 {
+    font-size: 28px;
+  }
+  .about-content p {
+    font-size: 15px;
+  }
+}
+
+/* Responsive - Mobile */
+@media (max-width: 600px) {
+  .about-card {
+    height: 300px;
+  }
+  .about-content {
+    position: static;
+    transform: none;
+    max-width: 90%;
+    margin: -120px auto 0 auto;
+    text-align: center;
+    border-radius: 15px;
+    background: rgba(255, 255, 255, 0.2);
+    backdrop-filter: blur(8px);
+    box-shadow: 5px 5px 20px rgba(0,0,0,0.2);
+    animation: none; /* remove slide animation on mobile */
+  }
+  .about-content.left,
+  .about-content.right {
+    left: auto;
+    right: auto;
+  }
+  .about-content h2 {
+    font-size: 24px;
+  }
+  .about-content p {
+    font-size: 14px;
+  }
+}

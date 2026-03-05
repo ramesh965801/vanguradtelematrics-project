@@ -1,0 +1,114 @@
+.services-page {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background: linear-gradient(135deg, #0f3d2e, #145c42);
+  transition: background 0.6s ease-in-out;
+}
+
+/* Section */
+.services-section {
+  flex: 1;
+  padding: 100px 20px;
+  text-align: center;
+  color: white;
+}
+
+/* Title */
+.services-title {
+  font-size: 40px;
+  font-weight: 800;
+  margin-bottom: 15px;
+}
+
+.services-subtitle {
+  font-size: 18px;
+  margin-bottom: 60px;
+  max-width: 700px;
+  margin-left: auto;
+  margin-right: auto;
+  opacity: 0.9;
+}
+
+/* Grid */
+.services-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 40px;
+  max-width: 1100px;
+  margin: auto;
+}
+
+/* Card */
+.service-card {
+  background: rgba(255, 255, 255, 0.08);
+  padding: 40px 30px;
+  border-radius: 18px;
+  backdrop-filter: blur(10px);
+  transition: all 0.4s ease;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+}
+
+.service-card:hover {
+  transform: translateY(-10px);
+  background: rgba(255, 255, 255, 0.15);
+}
+
+/* Icon */
+.service-icon {
+  font-size: 45px;
+  margin-bottom: 20px;
+}
+
+/* Text */
+.service-card h3 {
+  font-size: 22px;
+  margin-bottom: 15px;
+}
+
+.service-card p {
+  font-size: 15px;
+  line-height: 1.6;
+  opacity: 0.9;
+  margin-bottom: 25px;
+}
+
+/* Button */
+.service-btn {
+  padding: 10px 22px;
+  border: none;
+  border-radius: 30px;
+  background: white;
+  color: #0f3d2e;
+  font-weight: 600;
+  cursor: pointer;
+  transition: 0.3s ease;
+}
+
+.service-btn:hover {
+  transform: scale(1.05);
+  background: #d4f5e5;
+}
+
+/* Scroll Animation */
+.hidden {
+  opacity: 0;
+  transform: translateY(50px);
+  transition: all 0.8s ease;
+}
+
+.show {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .services-title {
+    font-size: 30px;
+  }
+
+  .services-subtitle {
+    font-size: 16px;
+  }
+}

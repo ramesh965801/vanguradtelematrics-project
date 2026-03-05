@@ -1,0 +1,244 @@
+/* ============================= */
+/* SECTION BACKGROUND */
+/* ============================= */
+.products {
+  padding: 80px 10%;
+  background: linear-gradient(135deg, #0f172a, #1e293b);
+  color: white;
+  text-align: center;
+  position: relative;
+}
+
+/* ============================= */
+/* SECTION TITLE */
+/* ============================= */
+.section-title {
+  font-size: 36px;
+  font-weight: 700;
+  margin-bottom: 60px;
+  position: relative;
+}
+
+.section-title::after {
+  content: "";
+  width: 80px;
+  height: 4px;
+  background: #38bdf8;
+  display: block;
+  margin: 12px auto 0;
+  border-radius: 5px;
+}
+
+/* ============================= */
+/* GRID */
+/* ============================= */
+.product-grid {
+  display: grid;
+
+  /* PERFECT 3 CARDS */
+  grid-template-columns: repeat(3, minmax(280px, 350px));
+
+  justify-content: center;
+  gap: 40px;
+}
+
+.single-product {
+  display: flex;
+  justify-content: center;
+}
+
+/* ============================= */
+/* CARD DESIGN */
+/* ============================= */
+.product-card {
+  width: 100%;
+  max-width: 350px;
+
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(10px);
+
+  border-radius: 20px;
+  padding: 30px;
+
+  transition: 0.4s ease;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+
+  transform: translateY(50px);
+  opacity: 0;
+
+  cursor: pointer;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+/* ============================= */
+/* IMAGE */
+/* ============================= */
+.product-card img {
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
+  border-radius: 15px;
+  margin-bottom: 20px;
+}
+
+/* ============================= */
+/* TITLE */
+/* ============================= */
+.product-card h3 {
+  font-size: 22px;
+  margin-bottom: 15px;
+  color: #38bdf8;
+}
+
+/* ============================= */
+/* DESCRIPTION */
+/* ============================= */
+.product-card p {
+  font-size: 15px;
+  line-height: 1.6;
+  color: #cbd5e1;
+  margin-bottom: 20px;
+
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* ============================= */
+/* PRICE */
+/* ============================= */
+.product-card h4 {
+  font-size: 20px;
+  font-weight: 700;
+  margin-top: 10px;
+  color: #00e5ff;
+}
+
+/* ============================= */
+/* HOVER EFFECT */
+/* ============================= */
+.product-card:hover {
+  transform: translateY(-10px) scale(1.03);
+  box-shadow: 0 20px 40px rgba(56, 189, 248, 0.3);
+}
+
+/* ============================= */
+/* BUTTON */
+/* ============================= */
+.buy-wrapper {
+  text-align: center;
+  margin-top: 25px;
+}
+
+.buy-wrapper button {
+  width: 100%;
+  padding: 12px 20px;
+  font-size: 15px;
+  font-weight: 600;
+
+  border-radius: 30px;
+  border: none;
+  cursor: pointer;
+
+  background: linear-gradient(135deg, #00e5ff, #0072ff);
+  color: white;
+
+  transition: 0.3s ease;
+}
+
+.buy-wrapper button:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+}
+
+/* ============================= */
+/* ANIMATIONS */
+/* ============================= */
+.slide-left {
+  animation: slideLeft 1s forwards;
+}
+
+.slide-up {
+  animation: slideUp 1s forwards;
+  animation-delay: 0.3s;
+}
+
+.slide-right {
+  animation: slideRight 1s forwards;
+  animation-delay: 0.6s;
+}
+
+@keyframes slideLeft {
+  from {
+    transform: translateX(-80px);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+@keyframes slideUp {
+  from {
+    transform: translateY(80px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+@keyframes slideRight {
+  from {
+    transform: translateX(80px);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+/* ============================= */
+/* RESPONSIVE DESIGN */
+/* ============================= */
+
+/* Tablet */
+@media (max-width: 992px) {
+
+  .product-grid {
+    grid-template-columns: repeat(2, minmax(280px, 350px));
+  }
+
+}
+
+/* Mobile */
+@media (max-width: 768px) {
+
+  .product-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .section-title {
+    font-size: 28px;
+  }
+
+  .product-card img {
+    height: 180px;
+  }
+
+  .buy-wrapper button {
+    width: 80%;
+    padding: 12px 0;
+    font-size: 15px;
+  }
+
+}

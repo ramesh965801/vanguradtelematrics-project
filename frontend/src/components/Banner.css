@@ -1,0 +1,207 @@
+/* ============================= */
+/* GLOBAL RESET */
+/* ============================= */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* ============================= */
+/* ANIMATED GRADIENT BACKGROUND */
+/* ============================= */
+.banner {
+  position: relative;
+  width: 100%;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+
+  background: linear-gradient(
+    -45deg,
+    #141e30,
+    #243b55,
+    #0f2027,
+    #2c5364
+  );
+  background-size: 400% 400%;
+  animation: gradientMove 12s ease infinite;
+
+  font-family: "Segoe UI", sans-serif;
+}
+
+/* Smooth Gradient Animation */
+@keyframes gradientMove {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+/* ============================= */
+/* BACKGROUND HOVER LIGHT EFFECT */
+/* ============================= */
+.hover-light {
+  position: absolute;
+  width: 300px;
+  height: 300px;
+  background: radial-gradient(circle, rgba(0,229,255,0.3), transparent 70%);
+  border-radius: 50%;
+  pointer-events: none;
+  transition: 0.2s ease;
+  z-index: 1;
+}
+
+/* ============================= */
+/* MOVING PARTICLES */
+/* ============================= */
+.particles::before,
+.particles::after {
+  content: "";
+  position: absolute;
+  width: 200%;
+  height: 200%;
+  background-image: radial-gradient(white 1px, transparent 1px);
+  background-size: 40px 40px;
+  opacity: 0.05;
+  animation: moveParticles 60s linear infinite;
+}
+
+.particles::after {
+  animation-direction: reverse;
+}
+
+@keyframes moveParticles {
+  from { transform: translate(0, 0); }
+  to { transform: translate(-50%, -50%); }
+}
+
+/* ============================= */
+/* GLASSMORPHISM CARD */
+/* ============================= */
+.glass-card {
+  position: relative;
+  z-index: 2;
+  text-align: center;
+  padding: 60px 40px;
+  max-width: 750px;
+  width: 90%;
+  color: white;
+
+  transition: 0.4s ease;
+  animation: fadeUp 1.2s ease forwards;
+}
+
+/* Card Hover Effect */
+.glass-card:hover {
+  transform: translateY(-8px);
+ 
+}
+
+/* Fade In Animation */
+@keyframes fadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(40px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ============================= */
+/* TEXT STYLING */
+/* ============================= */
+.glass-card h1 {
+  font-size: 52px;
+  font-weight: 700;
+  margin-bottom: 20px;
+}
+
+.glass-card p {
+  font-size: 18px;
+  margin-bottom: 40px;
+  color: #e0e0e0;
+}
+
+/* ============================= */
+/* BUTTONS */
+/* ============================= */
+.banner-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+
+.btn {
+  padding: 14px 32px;
+  border-radius: 30px;
+  text-decoration: none;
+  font-weight: 600;
+  transition: all 0.3s ease;
+  display: inline-block;
+}
+
+/* Primary Button */
+.primary {
+  background: linear-gradient(135deg, #00e5ff, #0072ff);
+  color: white;
+}
+
+.primary:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.4);
+}
+
+/* Secondary Button */
+.secondary {
+  border: 2px solid white;
+  color: white;
+}
+
+.secondary:hover {
+  background: white;
+  color: #243b55;
+  transform: translateY(-4px);
+}
+
+/* ============================= */
+/* RESPONSIVE DESIGN */
+/* ============================= */
+@media (max-width: 992px) {
+  .glass-card h1 {
+    font-size: 40px;
+  }
+}
+
+@media (max-width: 768px) {
+  .glass-card {
+    padding: 40px 25px;
+  }
+
+  .glass-card h1 {
+    font-size: 32px;
+  }
+
+  .glass-card p {
+    font-size: 16px;
+  }
+}
+
+@media (max-width: 480px) {
+  .glass-card h1 {
+    font-size: 26px;
+  }
+
+  .glass-card p {
+    font-size: 14px;
+  }
+
+  .btn {
+    padding: 12px 22px;
+    font-size: 14px;
+  }
+}
