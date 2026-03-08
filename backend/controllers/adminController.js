@@ -33,7 +33,7 @@ exports.deleteProduct = (req, res) => {
   });
 };
 
-// GET ALL PREBOOKINGS
+// GET ALL PREBOOKINGS form
 exports.getPrebookings = (req, res) => {
   const sql = `
     SELECT p.*, pr.title AS product_name, pr.price AS price
