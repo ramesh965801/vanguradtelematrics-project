@@ -22,7 +22,13 @@ const AdminDashboard = () => {
   const [preview, setPreview] = useState(null);
 
   // ---------------- API URLs ----------------
-  const API = `${import.meta.env.VITE_API_URL}api/admin`;
+ const API = import.meta.env.VITE_API_URL;
+
+fetch(`${API}/api/admin/add-product`, {
+  method: "POST",
+  body: formData
+});
+  
 const BASE_URL = import.meta.env.VITE_API_URL;
 
   // ---------------- LOGIN HANDLERS ----------------
