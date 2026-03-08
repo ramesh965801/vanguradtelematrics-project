@@ -9,7 +9,7 @@ router.post("/add-product", upload.single("image"), adminController.addProduct);
 router.get("/products", adminController.getProducts);
 router.delete("/delete-product/:id", adminController.deleteProduct);
 
-// Prebookings
+// Prebooking
 router.get("/prebookings", adminController.getPrebookings);
 
 module.exports = router;
