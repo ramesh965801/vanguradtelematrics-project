@@ -4,6 +4,9 @@ const express = require("express");
 const cors = require("cors");
 const path = require("path");
 
+// CONNECT DATABASE
+require("./db");
+
 const app = express();
 
 // Middleware
