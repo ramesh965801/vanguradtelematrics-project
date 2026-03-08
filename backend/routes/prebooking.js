@@ -2,7 +2,7 @@ const express = require("express");
 const router = express.Router();
 const db = require("../config/db");
 
-// POST prebooking
+// POST prebookings
 router.post("/", (req, res) => {
 
   const { product_id, name, email, phone, quantity, address } = req.body;
