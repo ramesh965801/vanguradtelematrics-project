@@ -1,9 +1,7 @@
-```javascript
 import React, { useState } from "react";
 import "./AdminDashboard.css";
 
 const AdminDashboard = () => {
-
   // ================= LOGIN =================
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [loginData, setLoginData] = useState({ username: "", password: "" });
@@ -38,9 +36,7 @@ const AdminDashboard = () => {
 
   const handleLogin = (e) => {
     e.preventDefault();
-
     const { username, password } = loginData;
-
     if (username === "admin" && password === "Admin@123") {
       setIsLoggedIn(true);
       setLoginError("");
@@ -53,32 +49,23 @@ const AdminDashboard = () => {
   // ================= LOAD DASHBOARD =================
   const loadDashboardData = async () => {
     try {
-
-      // PRODUCTS
       const resProducts = await fetch(`${API}/api/admin/products`);
       const productsData = await resProducts.json();
-
       setProducts(productsData);
       setTotalProducts(productsData.length);
 
-      // PRE BOOKINGS
       const resPre = await fetch(`${API}/api/admin/prebookings`);
       const preData = await resPre.json();
-
       setPreBookings(preData);
       setTotalPreBookings(preData.length);
 
-      // REVENUE
       let revenue = 0;
-
       preData.forEach((item) => {
         if (item.price && item.quantity) {
           revenue += Number(item.price) * Number(item.quantity);
         }
       });
-
       setTotalRevenue(revenue);
-
     } catch (err) {
       console.error("Dashboard load error:", err);
     }
@@ -86,39 +73,20 @@ const AdminDashboard = () => {
 
   // ================= FORM CHANGE =================
   const handleChange = (e) => {
-
     if (e.target.name === "image") {
-
       const file = e.target.files[0];
-
-      setNewProduct((prev) => ({
-        ...prev,
-        image: file
-      }));
-
-      if (file) {
-        setPreview(URL.createObjectURL(file));
-      }
-
+      setNewProduct((prev) => ({ ...prev, image: file }));
+      if (file) setPreview(URL.createObjectURL(file));
     } else {
-
-      setNewProduct((prev) => ({
-        ...prev,
-        [e.target.name]: e.target.value
-      }));
-
+      setNewProduct((prev) => ({ ...prev, [e.target.name]: e.target.value }));
     }
   };
 
   // ================= ADD PRODUCT =================
   const handleAddProduct = async (e) => {
-
     e.preventDefault();
-
     try {
-
       const formData = new FormData();
-
       formData.append("title", newProduct.title);
       formData.append("price", newProduct.price);
       formData.append("description", newProduct.description);
@@ -130,25 +98,12 @@ const AdminDashboard = () => {
       });
 
       if (res.ok) {
-
         setSuccess(true);
-
-        setNewProduct({
-          title: "",
-          price: "",
-          description: "",
-          image: null
-        });
-
+        setNewProduct({ title: "", price: "", description: "", image: null });
         setPreview(null);
-
         loadDashboardData();
-
-        setTimeout(() => {
-          setSuccess(false);
-        }, 1500);
+        setTimeout(() => setSuccess(false), 1500);
       }
-
     } catch (err) {
       console.error("Add product error:", err);
     }
@@ -156,17 +111,10 @@ const AdminDashboard = () => {
 
   // ================= DELETE =================
   const handleDelete = async (id, type) => {
-
     if (!window.confirm("Are you sure?")) return;
-
     try {
-
-      await fetch(`${API}/api/admin/delete-${type}/${id}`, {
-        method: "DELETE"
-      });
-
+      await fetch(`${API}/api/admin/delete-${type}/${id}`, { method: "DELETE" });
       loadDashboardData();
-
     } catch (err) {
       console.error("Delete error:", err);
     }
@@ -179,16 +127,11 @@ const AdminDashboard = () => {
 
   // ================= LOGIN PAGE =================
   if (!isLoggedIn) {
-
     return (
       <div className="login-popup">
-
         <form className="login-form" onSubmit={handleLogin}>
-
           <h2>Admin Login</h2>
-
           {loginError && <p className="error">{loginError}</p>}
-
           <input
             type="text"
             name="username"
@@ -197,7 +140,6 @@ const AdminDashboard = () => {
             onChange={handleLoginChange}
             required
           />
-
           <input
             type="password"
             name="password"
@@ -206,24 +148,18 @@ const AdminDashboard = () => {
             onChange={handleLoginChange}
             required
           />
-
           <button type="submit">Login</button>
-
         </form>
-
       </div>
     );
   }
 
   // ================= DASHBOARD =================
   return (
-
     <div className="admin-container">
-
       <h1 className="admin-title">Admin Dashboard</h1>
 
       <div className="dashboard-cards">
-
         <div className="dashboard-card" onClick={showProducts}>
           <h3>Total Products</h3>
           <h2>{totalProducts}</h2>
@@ -236,26 +172,20 @@ const AdminDashboard = () => {
 
         <div className="dashboard-card">
           <h3>Total Revenue</h3>
-          <h2>₹ {totalRevenue}</h2>
+          <h2>{`₹ ${totalRevenue}`}</h2> {/* ✅ Correct JSX string interpolation */}
         </div>
 
         <div className="dashboard-card" onClick={showAddProduct}>
           <h3>Add Product</h3>
           <h2>+</h2>
         </div>
-
       </div>
 
       {/* PRODUCTS */}
-
       {activeSection === "products" && (
-
         <div className="details-section">
-
           <h2>Product Details</h2>
-
           <table>
-
             <thead>
               <tr>
                 <th>ID</th>
@@ -266,61 +196,32 @@ const AdminDashboard = () => {
                 <th>Action</th>
               </tr>
             </thead>
-
             <tbody>
-
               {products.map((item) => (
-
                 <tr key={item.id}>
-
                   <td>{item.id}</td>
-
                   <td>
-                    <img
-                      src={`${API}/uploads/${item.image}`}
-                      alt={item.title}
-                      width="60"
-                    />
+                    <img src={`${API}/uploads/${item.image}`} alt={item.title} width="60" />
                   </td>
-
                   <td>{item.title}</td>
-
-                  <td>₹ {item.price}</td>
-
+                  <td>{`₹ ${item.price}`}</td> {/* ✅ Correct JSX string interpolation */}
                   <td>{item.description}</td>
-
                   <td>
-                    <button
-                      onClick={() => handleDelete(item.id, "product")}
-                    >
-                      Delete
-                    </button>
+                    <button onClick={() => handleDelete(item.id, "product")}>Delete</button>
                   </td>
-
                 </tr>
-
               ))}
-
             </tbody>
-
           </table>
-
         </div>
-
       )}
 
       {/* ADD PRODUCT */}
-
       {activeSection === "addProduct" && (
-
         <div className="product-form-section">
-
           <h2>Add New Product</h2>
-
           {success && <div>✅ Product Added Successfully!</div>}
-
           <form onSubmit={handleAddProduct}>
-
             <input
               type="text"
               name="title"
@@ -329,7 +230,6 @@ const AdminDashboard = () => {
               onChange={handleChange}
               required
             />
-
             <input
               type="number"
               name="price"
@@ -338,7 +238,6 @@ const AdminDashboard = () => {
               onChange={handleChange}
               required
             />
-
             <textarea
               name="description"
               placeholder="Description"
@@ -346,7 +245,6 @@ const AdminDashboard = () => {
               onChange={handleChange}
               required
             />
-
             <input
               type="file"
               name="image"
@@ -354,20 +252,13 @@ const AdminDashboard = () => {
               onChange={handleChange}
               required
             />
-
             {preview && <img src={preview} width="100" />}
-
             <button type="submit">Add Product</button>
-
           </form>
-
         </div>
-
       )}
-
     </div>
   );
 };
 
 export default AdminDashboard;
-```
