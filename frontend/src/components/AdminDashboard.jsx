@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "./AdminDashboard.css";
 
 const AdminDashboard = () => {
@@ -23,7 +23,6 @@ const AdminDashboard = () => {
     description: "",
     image: null
   });
-
   const [preview, setPreview] = useState(null);
 
   // ================= API URL =================
@@ -49,16 +48,19 @@ const AdminDashboard = () => {
   // ================= LOAD DASHBOARD =================
   const loadDashboardData = async () => {
     try {
+      // -------- PRODUCTS --------
       const resProducts = await fetch(`${API}/api/admin/products`);
       const productsData = await resProducts.json();
       setProducts(productsData);
       setTotalProducts(productsData.length);
 
+      // -------- PRE-BOOKINGS --------
       const resPre = await fetch(`${API}/api/admin/prebookings`);
       const preData = await resPre.json();
       setPreBookings(preData);
       setTotalPreBookings(preData.length);
 
+      // -------- REVENUE --------
       let revenue = 0;
       preData.forEach((item) => {
         if (item.price && item.quantity) {
@@ -70,6 +72,10 @@ const AdminDashboard = () => {
       console.error("Dashboard load error:", err);
     }
   };
+
+  useEffect(() => {
+    if (isLoggedIn) loadDashboardData();
+  }, [isLoggedIn]);
 
   // ================= FORM CHANGE =================
   const handleChange = (e) => {
@@ -172,7 +178,7 @@ const AdminDashboard = () => {
 
         <div className="dashboard-card">
           <h3>Total Revenue</h3>
-          <h2>{`₹ ${totalRevenue}`}</h2> {/* ✅ Correct JSX string interpolation */}
+          <h2>{`₹ ${totalRevenue}`}</h2>
         </div>
 
         <div className="dashboard-card" onClick={showAddProduct}>
@@ -181,7 +187,7 @@ const AdminDashboard = () => {
         </div>
       </div>
 
-      {/* PRODUCTS */}
+      {/* PRODUCTS SECTION */}
       {activeSection === "products" && (
         <div className="details-section">
           <h2>Product Details</h2>
@@ -204,7 +210,7 @@ const AdminDashboard = () => {
                     <img src={`${API}/uploads/${item.image}`} alt={item.title} width="60" />
                   </td>
                   <td>{item.title}</td>
-                  <td>{`₹ ${item.price}`}</td> {/* ✅ Correct JSX string interpolation */}
+                  <td>{`₹ ${item.price}`}</td>
                   <td>{item.description}</td>
                   <td>
                     <button onClick={() => handleDelete(item.id, "product")}>Delete</button>
@@ -216,7 +222,46 @@ const AdminDashboard = () => {
         </div>
       )}
 
-      {/* ADD PRODUCT */}
+      {/* PRE-BOOKINGS SECTION */}
+      {activeSection === "prebookings" && (
+        <div className="details-section">
+          <h2>Pre-Booking Details</h2>
+          <table>
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>Product ID</th>
+                <th>Name</th>
+                <th>Email</th>
+                <th>Phone</th>
+                <th>Quantity</th>
+                <th>Address</th>
+                <th>Total</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              {preBookings.map((item) => (
+                <tr key={item.id}>
+                  <td>{item.id}</td>
+                  <td>{item.product_id}</td>
+                  <td>{item.name}</td>
+                  <td>{item.email}</td>
+                  <td>{item.phone}</td>
+                  <td>{item.quantity}</td>
+                  <td>{item.address}</td>
+                  <td>{`₹ ${item.price * item.quantity}`}</td>
+                  <td>
+                    <button onClick={() => handleDelete(item.id, "prebooking")}>Delete</button>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      )}
+
+      {/* ADD PRODUCT SECTION */}
       {activeSection === "addProduct" && (
         <div className="product-form-section">
           <h2>Add New Product</h2>
