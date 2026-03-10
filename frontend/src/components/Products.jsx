@@ -5,7 +5,6 @@ import "./Products.css";
 const Products = () => {
 
 const navigate = useNavigate();
-
 const [products, setProducts] = useState([]);
 const [loading, setLoading] = useState(true);
 
@@ -18,13 +17,19 @@ const fetchProducts = async () => {
 
   try {
 
-    const response = await fetch(`${API}/api/admin/products`);
+    const url = API + "/api/admin/products";
+
+    const response = await fetch(url);
 
     const data = await response.json();
 
     console.log("Products:", data);
 
-    setProducts(data);
+    if (Array.isArray(data)) {
+      setProducts(data);
+    } else {
+      setProducts([]);
+    }
 
   } catch (error) {
 
@@ -44,7 +49,7 @@ fetchProducts();
 }, []);
 
 if (loading) {
-return <h2 style={{textAlign:"center"}}>Loading products...</h2>;
+return <h2 style={{ textAlign: "center" }}>Loading products...</h2>;
 }
 
 return (
@@ -56,7 +61,7 @@ return (
 
   {products.length === 0 ? (
 
-    <p style={{textAlign:"center"}}>No products available</p>
+    <p style={{ textAlign: "center" }}>No products available</p>
 
   ) : (
 
@@ -67,11 +72,11 @@ return (
         <div
           key={product.id}
           className="product-card"
-          onClick={() => navigate(`/product/${product.id}`)}
+          onClick={() => navigate("/product/" + product.id)}
         >
 
           <img
-            src={`${API}/uploads/${product.image}`}
+            src={API + "/uploads/" + product.image}
             alt={product.title}
           />
 
@@ -84,7 +89,7 @@ return (
           <button
             onClick={(e) => {
               e.stopPropagation();
-              navigate(`/product/${product.id}`);
+              navigate("/product/" + product.id);
             }}
           >
             Pre Booking Now
