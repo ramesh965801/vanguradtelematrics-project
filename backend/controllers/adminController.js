@@ -16,11 +16,21 @@ exports.addProduct = (req, res) => {
   });
 };
 
-// GET PRODUCTS
+// get product
+
 exports.getProducts = (req, res) => {
+  const host = process.env.BACKEND_HOST || `http://localhost:${process.env.PORT || 8080}`;
+
   db.query("SELECT * FROM products ORDER BY id DESC", (err, results) => {
     if (err) return res.status(500).json({ message: "DB error" });
-    res.json(results);
+
+    // Add full URL to image
+    const productsWithURL = results.map(product => ({
+      ...product,
+      image: product.image ? `${host}/uploads/${product.image}` : null
+    }));
+
+    res.json(productsWithURL);
   });
 };
 
