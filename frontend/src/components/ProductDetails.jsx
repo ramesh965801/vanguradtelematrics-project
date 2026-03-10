@@ -5,7 +5,6 @@ import Footer from "./Footer";
 import "./ProductDetails.css";
 
 const ProductDetails = () => {
-
   const { id } = useParams();
   const navigate = useNavigate();
 
@@ -13,8 +12,8 @@ const ProductDetails = () => {
   const [loading, setLoading] = useState(true);
 
   // VITE ENV VARIABLES
-  const API = `${import.meta.env.VITE_API_URL}/api/admin`;
-  const BASE_URL = import.meta.env.VITE_API_URL;
+  const API = `${import.meta.env.VITE_API_URL}/products`; // API endpoint for products
+  const BASE_URL = import.meta.env.VITE_API_URL; // Backend base URL for images
 
   useEffect(() => {
     fetchProduct();
@@ -22,16 +21,12 @@ const ProductDetails = () => {
 
   const fetchProduct = async () => {
     try {
-
-      const res = await fetch(`${API}/products`);
+      const res = await fetch(API);
       const data = await res.json();
 
-      const foundProduct = data.find(
-        (item) => item.id === Number(id)
-      );
-
+      // Find product by ID
+      const foundProduct = data.find((item) => item.id === Number(id));
       setProduct(foundProduct);
-
     } catch (error) {
       console.error("Error fetching product:", error);
     } finally {
@@ -65,54 +60,33 @@ const ProductDetails = () => {
 
   return (
     <div className="details-page">
-
       <Navbar />
 
       <div className="details-content-wrapper">
-
-        <button
-          className="back-btn"
-          onClick={() => navigate(-1)}
-        >
+        <button className="back-btn" onClick={() => navigate(-1)}>
           ← Back
         </button>
 
         <div className="details-card">
-
           <img
-            src={`${BASE_URL}/uploads/${product.image}`}
+            src={`${BASE_URL}/uploads/${product.image}`} // Load image from backend /uploads
             alt={product.title}
             onError={(e) => {
-              e.target.src = "/placeholder.png";
+              e.target.src = "/placeholder.png"; // fallback if image missing
             }}
           />
 
           <div className="details-content">
-
             <h1>{product.title}</h1>
-
             <p>{product.description}</p>
 
-          
-<div className="price-box">
+            <div className="price-box">
+              <span className="old-price">₹19,998.67</span>
+              <span className="new-price">₹14,999</span>
+              <span className="discount">25% OFF</span>
+            </div>
 
-  <span className="old-price">
-    ₹19,998.67
-  </span>
-
-  <span className="new-price">
-    ₹14,999
-  </span>
-
-  <span className="discount">
-    25% OFF
-  </span>
-
-</div>
-
-<p className="exclusive-offer">
-  🔥 Exclusive offer for first 15 customers
-</p>
+            <p className="exclusive-offer">🔥 Exclusive offer for first 15 customers</p>
 
             <button
               className="action-btn"
@@ -120,15 +94,11 @@ const ProductDetails = () => {
             >
               Pre Booking Now
             </button>
-
           </div>
-
         </div>
-
       </div>
 
       <Footer />
-
     </div>
   );
 };
