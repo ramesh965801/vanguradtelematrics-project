@@ -9,10 +9,10 @@ const navigate = useNavigate();
 const [products, setProducts] = useState([]);
 const [loading, setLoading] = useState(true);
 
-// API BASE
+// Base API URL
 const API = import.meta.env.VITE_API_URL;
 
-// Products API
+// Correct endpoint
 const PRODUCTS_API = `${API}/api/admin/products`;
 
 useEffect(() => {
@@ -107,6 +107,10 @@ return (
             <h3>{product.title}</h3>
 
             <p>{product.description}</p>
+
+            <p className="price">
+              ₹ {product.price}
+            </p>
 
             <div className="buy-wrapper">
 
