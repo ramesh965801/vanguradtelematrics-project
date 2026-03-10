@@ -5,6 +5,7 @@ import "./Products.css";
 const Products = () => {
 
 const navigate = useNavigate();
+
 const [products, setProducts] = useState([]);
 const [loading, setLoading] = useState(true);
 
@@ -17,9 +18,7 @@ const fetchProducts = async () => {
 
   try {
 
-    const url = API + "/api/admin/products";
-
-    const response = await fetch(url);
+    const response = await fetch(API + "/api/admin/products");
 
     const data = await response.json();
 
@@ -55,7 +54,7 @@ return <h2 style={{ textAlign: "center" }}>Loading products...</h2>;
 return (
 
 ```
-<section className="products">
+<div className="products">
 
   <h2 className="section-title">Our Products</h2>
 
@@ -69,11 +68,7 @@ return (
 
       {products.map((product) => (
 
-        <div
-          key={product.id}
-          className="product-card"
-          onClick={() => navigate("/product/" + product.id)}
-        >
+        <div key={product.id} className="product-card">
 
           <img
             src={API + "/uploads/" + product.image}
@@ -87,10 +82,7 @@ return (
           <p>₹ {product.price}</p>
 
           <button
-            onClick={(e) => {
-              e.stopPropagation();
-              navigate("/product/" + product.id);
-            }}
+            onClick={() => navigate("/product/" + product.id)}
           >
             Pre Booking Now
           </button>
@@ -103,7 +95,7 @@ return (
 
   )}
 
-</section>
+</div>
 ```
 
 );
