@@ -12,8 +12,8 @@ const Products = () => {
   const API = `${import.meta.env.VITE_API_URL}/products`;
 
   // Backend base URL for images
-const BASE_URL = "https://vanguradtelematrics-project.onrender.com";
-  
+  const BASE_URL = "https://vanguradtelematrics-project.onrender.com";
+
   useEffect(() => {
     fetchProducts();
   }, []);
@@ -68,21 +68,17 @@ const BASE_URL = "https://vanguradtelematrics-project.onrender.com";
                 className={`product-card ${animationClass}`}
                 onClick={() => navigate(`/product/${product.id}`)}
               >
-       {products.map((product) => (
-  <div key={product.id} className="product-card">
+                <img
+                  src={`${BASE_URL}/uploads/${product.image}`}
+                  alt={product.title}
+                  loading="lazy"
+                  onError={(e) => {
+                    e.target.src = "/placeholder.png";
+                  }}
+                />
 
-    <img
-      src={`${BASE_URL}/uploads/${product.image}`}
-      alt={product.title}
-      loading="lazy"
-      onError={(e) => (e.target.src = "/placeholder.png")}
-    />
-
-    <h3>{product.title}</h3>
-    <p>{product.description}</p>
-
-  </div>
-))}
+                <h3>{product.title}</h3>
+                <p>{product.description}</p>
 
                 <div className="buy-wrapper">
                   <button
