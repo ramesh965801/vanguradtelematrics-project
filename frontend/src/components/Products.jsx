@@ -18,17 +18,13 @@ const fetchProducts = async () => {
 
   try {
 
-    const response = await fetch(API + "/api/admin/products");
+    const response = await fetch(`${API}/api/admin/products`);
 
     const data = await response.json();
 
     console.log("Products:", data);
 
-    if (Array.isArray(data)) {
-      setProducts(data);
-    } else {
-      setProducts([]);
-    }
+    setProducts(data);
 
   } catch (error) {
 
@@ -48,19 +44,19 @@ fetchProducts();
 }, []);
 
 if (loading) {
-return <h2 style={{ textAlign: "center" }}>Loading products...</h2>;
+return <h2 style={{textAlign:"center"}}>Loading products...</h2>;
 }
 
 return (
 
 ```
-<div className="products">
+<section className="products">
 
   <h2 className="section-title">Our Products</h2>
 
   {products.length === 0 ? (
 
-    <p style={{ textAlign: "center" }}>No products available</p>
+    <p style={{textAlign:"center"}}>No products available</p>
 
   ) : (
 
@@ -68,10 +64,14 @@ return (
 
       {products.map((product) => (
 
-        <div key={product.id} className="product-card">
+        <div
+          key={product.id}
+          className="product-card"
+          onClick={() => navigate(`/product/${product.id}`)}
+        >
 
           <img
-            src={API + "/uploads/" + product.image}
+            src={`${API}/uploads/${product.image}`}
             alt={product.title}
           />
 
@@ -82,7 +82,10 @@ return (
           <p>₹ {product.price}</p>
 
           <button
-            onClick={() => navigate("/product/" + product.id)}
+            onClick={(e) => {
+              e.stopPropagation();
+              navigate(`/product/${product.id}`);
+            }}
           >
             Pre Booking Now
           </button>
@@ -95,7 +98,7 @@ return (
 
   )}
 
-</div>
+</section>
 ```
 
 );
