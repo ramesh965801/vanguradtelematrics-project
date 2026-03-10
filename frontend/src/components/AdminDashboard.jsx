@@ -28,7 +28,7 @@ const AdminDashboard = () => {
   // ================= API URL =================
   const API = import.meta.env.VITE_API_URL;
 
-  // ================= LOGIN =================
+  // ================= LOGIN HANDLERS =================
   const handleLoginChange = (e) => {
     setLoginData({ ...loginData, [e.target.name]: e.target.value });
   };
@@ -45,17 +45,17 @@ const AdminDashboard = () => {
     }
   };
 
-  // ================= LOAD DASHBOARD =================
+  // ================= LOAD DASHBOARD DATA =================
   const loadDashboardData = async () => {
     try {
       // -------- PRODUCTS --------
-      const resProducts = await fetch(`${API}/api/admin/products`);
+      const resProducts = await fetch(`${API}/products`);
       const productsData = await resProducts.json();
       setProducts(productsData);
       setTotalProducts(productsData.length);
 
       // -------- PRE-BOOKINGS --------
-      const resPre = await fetch(`${API}/api/admin/prebookings`);
+      const resPre = await fetch(`${API}/prebookings`);
       const preData = await resPre.json();
       setPreBookings(preData);
       setTotalPreBookings(preData.length);
@@ -98,7 +98,7 @@ const AdminDashboard = () => {
       formData.append("description", newProduct.description);
       formData.append("image", newProduct.image);
 
-      const res = await fetch(`${API}/api/admin/add-product`, {
+      const res = await fetch(`${API}/add-product`, {
         method: "POST",
         body: formData
       });
@@ -109,6 +109,9 @@ const AdminDashboard = () => {
         setPreview(null);
         loadDashboardData();
         setTimeout(() => setSuccess(false), 1500);
+      } else {
+        const errData = await res.json();
+        console.error("Add product failed:", errData);
       }
     } catch (err) {
       console.error("Add product error:", err);
@@ -119,7 +122,7 @@ const AdminDashboard = () => {
   const handleDelete = async (id, type) => {
     if (!window.confirm("Are you sure?")) return;
     try {
-      await fetch(`${API}/api/admin/delete-${type}/${id}`, { method: "DELETE" });
+      await fetch(`${API}/delete-${type}/${id}`, { method: "DELETE" });
       loadDashboardData();
     } catch (err) {
       console.error("Delete error:", err);
@@ -187,7 +190,7 @@ const AdminDashboard = () => {
         </div>
       </div>
 
-      {/* PRODUCTS SECTION */}
+      {/* ================= PRODUCTS SECTION ================= */}
       {activeSection === "products" && (
         <div className="details-section">
           <h2>Product Details</h2>
@@ -207,7 +210,12 @@ const AdminDashboard = () => {
                 <tr key={item.id}>
                   <td>{item.id}</td>
                   <td>
-                    <img src={`${API}/uploads/${item.image}`} alt={item.title} width="60" />
+                    <img
+                      src={item.image || "/placeholder.png"}
+                      alt={item.title}
+                      width="60"
+                      onError={(e) => { e.target.src = "/placeholder.png"; }}
+                    />
                   </td>
                   <td>{item.title}</td>
                   <td>{`₹ ${item.price}`}</td>
@@ -222,7 +230,7 @@ const AdminDashboard = () => {
         </div>
       )}
 
-      {/* PRE-BOOKINGS SECTION */}
+      {/* ================= PRE-BOOKINGS SECTION ================= */}
       {activeSection === "prebookings" && (
         <div className="details-section">
           <h2>Pre-Booking Details</h2>
@@ -261,7 +269,7 @@ const AdminDashboard = () => {
         </div>
       )}
 
-      {/* ADD PRODUCT SECTION */}
+      {/* ================= ADD PRODUCT SECTION ================= */}
       {activeSection === "addProduct" && (
         <div className="product-form-section">
           <h2>Add New Product</h2>
@@ -297,7 +305,7 @@ const AdminDashboard = () => {
               onChange={handleChange}
               required
             />
-            {preview && <img src={preview} width="100" />}
+            {preview && <img src={preview} width="100" alt="preview" />}
             <button type="submit">Add Product</button>
           </form>
         </div>
