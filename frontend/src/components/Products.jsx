@@ -4,12 +4,11 @@ import "./Products.css";
 
 const Products = () => {
   const navigate = useNavigate();
-
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  const API = import.meta.env.VITE_API_URL;
-  const BASE_URL = import.meta.env.VITE_BASE_URL;
+  const API = `${import.meta.env.VITE_API_URL}/products`;
+  const BASE_URL = import.meta.env.VITE_API_URL.replace("/api/admin","");
 
   useEffect(() => {
     fetchProducts();
@@ -17,13 +16,12 @@ const Products = () => {
 
   const fetchProducts = async () => {
     try {
-      const res = await fetch(`${API}/admin/products`);
+      const res = await fetch(API);
       const data = await res.json();
 
       if (Array.isArray(data)) setProducts(data);
       else if (data.products) setProducts(data.products);
       else setProducts([]);
-
     } catch (error) {
       console.error("Fetch error:", error);
       setProducts([]);
@@ -32,44 +30,41 @@ const Products = () => {
     }
   };
 
-  if (loading)
-    return <h2 style={{ textAlign: "center" }}>Loading products...</h2>;
+  if (loading) return <h2 style={{ textAlign: "center", marginTop: "50px" }}>Loading products...</h2>;
 
   return (
     <section className="products">
       <h2 className="section-title">Our Products</h2>
-
       {products.length === 0 ? (
         <p style={{ textAlign: "center" }}>No products available</p>
       ) : (
-        <div className="product-grid">
-          {products.map((product) => {
-
-            const imageUrl = product.image
-              ? `${BASE_URL}/uploads/${product.image}`
-              : "/placeholder.png";
+        <div className={`product-grid ${products.length === 1 ? "single-product" : ""}`}>
+          {products.map((product, index) => {
+            let animationClass = index % 3 === 0 ? "slide-left" : index % 3 === 1 ? "slide-up" : "slide-right";
 
             return (
               <div
                 key={product.id}
-                className="product-card"
+                className={`product-card ${animationClass}`}
                 onClick={() => navigate(`/product/${product.id}`)}
               >
-
-             <img src={${BASE_URL}/uploads/${product.image}} alt={product.title} onError={(e) => (e.target.src = "/placeholder.png")} />
-
+                <img
+                  src={`${BASE_URL}/uploads/${product.image}`}
+                  alt={product.title}
+                  onError={(e) => (e.target.src = "/placeholder.png")}
+                />
                 <h3>{product.title}</h3>
                 <p>{product.description}</p>
-
-                <button
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    navigate(`/product/${product.id}`);
-                  }}
-                >
-                  Pre Booking Now
-                </button>
-
+                <div className="buy-wrapper">
+                  <button
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      navigate(`/product/${product.id}`);
+                    }}
+                  >
+                    Pre Booking Now
+                  </button>
+                </div>
               </div>
             );
           })}
