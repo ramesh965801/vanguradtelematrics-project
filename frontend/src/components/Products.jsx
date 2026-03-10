@@ -12,23 +12,28 @@ const [loading, setLoading] = useState(true);
 const API = import.meta.env.VITE_API_URL;
 
 useEffect(() => {
-fetchProducts();
+loadProducts();
 }, []);
 
-const fetchProducts = async () => {
+const loadProducts = async () => {
 
 ```
 try {
 
-  const res = await fetch(`${API}/api/products`);
+  const res = await fetch(`${API}/api/admin/products`);
 
   const data = await res.json();
 
-  setProducts(data);
+  if (Array.isArray(data)) {
+    setProducts(data);
+  } else {
+    setProducts([]);
+  }
 
 } catch (error) {
 
   console.error("Error fetching products:", error);
+  setProducts([]);
 
 } finally {
 
@@ -55,7 +60,9 @@ return (
 
   {products.length === 0 ? (
 
-    <p style={{ textAlign: "center" }}>No products available</p>
+    <p style={{ textAlign: "center" }}>
+      No products available
+    </p>
 
   ) : (
 
