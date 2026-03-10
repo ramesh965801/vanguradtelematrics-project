@@ -13,6 +13,7 @@ import Products from "./components/Products";
 
 function App() {
   return (
+    <BrowserRouter>
     <Router>
       <Routes>
         <Route path="/" element={<Home />} />
@@ -28,6 +29,7 @@ function App() {
 
       </Routes>
     </Router>
+       </BrowserRouter>
   );
 }
 
