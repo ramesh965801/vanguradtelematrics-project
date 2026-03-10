@@ -77,8 +77,8 @@ const Products = () => {
                 onClick={() => navigate(`/product/${product.id}`)}
               >
 
-              <img
-  src={product.image ? `/uploads/${product.image}` : "/placeholder.png"}
+         <img
+  src={`${BASE_URL}/uploads/${product.image}`} // BASE_URL = live backend URL
   alt={product.title}
   onError={(e) => { e.target.src = "/placeholder.png"; }}
 />
