@@ -218,7 +218,7 @@ const AdminDashboard = () => {
               {preBookings.map((item) => (
                 <tr key={item.id}>
                   <td>{item.id}</td>
-                  <td>{item.product_name}</td>
+                  <td>{item.title}</td>
                   <td>{item.name}</td>
                   <td>{item.email}</td>
                   <td>{item.phone}</td>
