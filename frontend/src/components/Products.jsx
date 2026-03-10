@@ -22,13 +22,7 @@ const fetchProducts = async () => {
 
     const data = await res.json();
 
-    console.log("Products from API:", data);
-
-    if (Array.isArray(data)) {
-      setProducts(data);
-    } else {
-      setProducts([]);
-    }
+    setProducts(data);
 
   } catch (error) {
 
@@ -48,19 +42,19 @@ fetchProducts();
 }, [API]);
 
 if (loading) {
-return <h2 style={{textAlign:"center"}}>Loading products...</h2>;
+return <h2 style={{ textAlign: "center" }}>Loading products...</h2>;
 }
 
 return (
 
 ```
-<div className="products">
+<section className="products">
 
-  <h2>Our Products</h2>
+  <h2 className="section-title">Our Products</h2>
 
   {products.length === 0 ? (
 
-    <p>No products available</p>
+    <p style={{ textAlign: "center" }}>No products available</p>
 
   ) : (
 
@@ -91,7 +85,7 @@ return (
               navigate(`/product/${product.id}`);
             }}
           >
-            Pre Booking
+            Pre Booking Now
           </button>
 
         </div>
@@ -102,7 +96,7 @@ return (
 
   )}
 
-</div>
+</section>
 ```
 
 );
