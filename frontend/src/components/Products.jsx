@@ -78,12 +78,10 @@ const Products = () => {
               >
 
                 <img
-                  src={`${BASE_URL}/uploads/${product.image}`}
-                  alt={product.title}
-                  onError={(e) => {
-                    e.target.src = "/placeholder.png";
-                  }}
-                />
+  src={`/uploads/${product.image}`}
+  alt={product.title}
+  onError={(e) => { e.target.src = "/placeholder.png"; }}
+/>
 
                 <h3>{product.title}</h3>
 
