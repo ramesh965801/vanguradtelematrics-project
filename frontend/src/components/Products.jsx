@@ -9,10 +9,7 @@ const navigate = useNavigate();
 const [products, setProducts] = useState([]);
 const [loading, setLoading] = useState(true);
 
-// API URL
 const API = import.meta.env.VITE_API_URL;
-
-const PRODUCTS_API = `${API}/api/admin/products`;
 
 useEffect(() => {
 fetchProducts();
@@ -23,22 +20,15 @@ const fetchProducts = async () => {
 ```
 try {
 
-  const res = await fetch(PRODUCTS_API);
+  const res = await fetch(`${API}/api/products`);
 
   const data = await res.json();
 
-  if (Array.isArray(data)) {
-    setProducts(data);
-  } else if (data.products) {
-    setProducts(data.products);
-  } else {
-    setProducts([]);
-  }
+  setProducts(data);
 
 } catch (error) {
 
-  console.error("Fetch error:", error);
-  setProducts([]);
+  console.error("Error fetching products:", error);
 
 } finally {
 
@@ -65,66 +55,43 @@ return (
 
   {products.length === 0 ? (
 
-    <p style={{ textAlign: "center" }}>
-      No products available
-    </p>
+    <p style={{ textAlign: "center" }}>No products available</p>
 
   ) : (
 
     <div className="product-grid">
 
-      {products.map((product, index) => {
+      {products.map((product) => (
 
-        let animationClass =
-          index % 3 === 0
-            ? "slide-left"
-            : index % 3 === 1
-            ? "slide-up"
-            : "slide-right";
+        <div
+          key={product.id}
+          className="product-card"
+          onClick={() => navigate(`/product/${product.id}`)}
+        >
 
-        return (
+          <img
+            src={`${API}/uploads/${product.image}`}
+            alt={product.title}
+          />
 
-          <div
-            key={product.id}
-            className={`product-card ${animationClass}`}
-            onClick={() => navigate(`/product/${product.id}`)}
+          <h3>{product.title}</h3>
+
+          <p>{product.description}</p>
+
+          <p className="price">₹ {product.price}</p>
+
+          <button
+            onClick={(e) => {
+              e.stopPropagation();
+              navigate(`/product/${product.id}`);
+            }}
           >
+            Pre Booking Now
+          </button>
 
-            <img
-              src={`${API}/uploads/${product.image}`}
-              alt={product.title}
-              loading="lazy"
-              onError={(e) => {
-                e.target.src = "/placeholder.png";
-              }}
-            />
+        </div>
 
-            <h3>{product.title}</h3>
-
-            <p>{product.description}</p>
-
-            <p className="price">
-              ₹ {product.price}
-            </p>
-
-            <div className="buy-wrapper">
-
-              <button
-                onClick={(e) => {
-                  e.stopPropagation();
-                  navigate(`/product/${product.id}`);
-                }}
-              >
-                Pre Booking Now
-              </button>
-
-            </div>
-
-          </div>
-
-        );
-
-      })}
+      ))}
 
     </div>
 
