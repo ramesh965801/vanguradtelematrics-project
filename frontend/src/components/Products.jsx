@@ -18,9 +18,11 @@ const fetchProducts = async () => {
 
   try {
 
-    const res = await fetch(`${API}/api/admin/products`);
+    const response = await fetch(`${API}/api/admin/products`);
 
-    const data = await res.json();
+    const data = await response.json();
+
+    console.log("Products:", data);
 
     setProducts(data);
 
@@ -39,10 +41,10 @@ const fetchProducts = async () => {
 fetchProducts();
 ```
 
-}, [API]);
+}, []);
 
 if (loading) {
-return <h2 style={{ textAlign: "center" }}>Loading products...</h2>;
+return <h2 style={{textAlign:"center"}}>Loading products...</h2>;
 }
 
 return (
@@ -54,7 +56,7 @@ return (
 
   {products.length === 0 ? (
 
-    <p style={{ textAlign: "center" }}>No products available</p>
+    <p style={{textAlign:"center"}}>No products available</p>
 
   ) : (
 
