@@ -1,5 +1,6 @@
-// backend/controllers/adminController.js
 const db = require("../config/db");
+
+const host = process.env.BACKEND_HOST || `http://localhost:${process.env.PORT || 8080}`;
 
 // ADD PRODUCT
 exports.addProduct = (req, res) => {
@@ -12,20 +13,28 @@ exports.addProduct = (req, res) => {
   const sql = "INSERT INTO products (title, price, description, image) VALUES (?, ?, ?, ?)";
   db.query(sql, [title, price, description, image], (err, result) => {
     if (err) return res.status(500).json({ message: "DB error", error: err });
-    res.json({ success: true, productId: result.insertId });
+
+    // Return product with full image URL
+    res.json({
+      success: true,
+      product: {
+        id: result.insertId,
+        title,
+        price,
+        description,
+        image: `${host}/uploads/${image}`
+      }
+    });
   });
 };
 
-// get product
-
+// GET PRODUCTS
 exports.getProducts = (req, res) => {
-  const host = process.env.BACKEND_HOST || `http://localhost:${process.env.PORT || 8080}`;
-
   db.query("SELECT * FROM products ORDER BY id DESC", (err, results) => {
     if (err) return res.status(500).json({ message: "DB error" });
 
-    // Add full URL to image
-    const productsWithURL = results.map(product => ({
+    // Add full image URL for each product
+    const productsWithURL = results.map((product) => ({
       ...product,
       image: product.image ? `${host}/uploads/${product.image}` : null
     }));
@@ -43,7 +52,7 @@ exports.deleteProduct = (req, res) => {
   });
 };
 
-// GET ALL PREBOOKINGS form
+// GET ALL PREBOOKINGS
 exports.getPrebookings = (req, res) => {
   const sql = `
     SELECT p.*, pr.title AS product_name, pr.price AS price
