@@ -49,10 +49,11 @@ const Products = () => {
                 onClick={() => navigate(`/product/${product.id}`)}
               >
                 <img
-                  src={`${BASE_URL}/uploads/${product.image}`}
-                  alt={product.title}
-                  onError={(e) => (e.target.src = "/placeholder.png")}
-                />
+                      src={`${API.replace("/api/admin","")}/uploads/${item.image}`}
+                      alt={item.title}
+                      width="60"
+                      onError={(e) => (e.target.src = "/placeholder.png")}
+                    />
                 <h3>{product.title}</h3>
                 <p>{product.description}</p>
                 <div className="buy-wrapper">
