@@ -14,6 +14,11 @@ app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 const adminRoutes = require("./routes/admin");
 app.use("/api/admin", adminRoutes);
 
+const prebookingRoutes = require("./routes/prebooking");
+app.use(express.json());
+
+app.use("/api/prebooking", prebookingRoutes);
+
 // Test
 app.get("/", (req, res) => res.send("🚀 Backend Server Running"));
 
