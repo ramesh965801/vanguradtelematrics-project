@@ -1,107 +1,68 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import "./Products.css";
 
 const Products = () => {
 
-const navigate = useNavigate();
+  const navigate = useNavigate();
+  const [products, setProducts] = useState([]);
 
-const [products, setProducts] = useState([]);
-const [loading, setLoading] = useState(true);
+  const API = import.meta.env.VITE_API_URL;
 
-const API = import.meta.env.VITE_API_URL;
+  useEffect(() => {
 
-useEffect(() => {
+    const loadProducts = async () => {
 
-```
-const fetchProducts = async () => {
+      try {
 
-  try {
+        const res = await fetch(API + "/api/admin/products");
+        const data = await res.json();
 
-    const response = await fetch(`${API}/api/admin/products`);
+        setProducts(data);
 
-    const data = await response.json();
+      } catch (err) {
+        console.log(err);
+      }
 
-    console.log("Products:", data);
+    };
 
-    setProducts(data);
+    loadProducts();
 
-  } catch (error) {
+  }, []);
 
-    console.error("Fetch error:", error);
+  return (
 
-  } finally {
+    <div>
 
-    setLoading(false);
+      <h2>Products</h2>
 
-  }
+      {products.length === 0 ? (
+        <p>No products available</p>
+      ) : (
 
-};
+        products.map((product) => (
 
-fetchProducts();
-```
+          <div key={product.id}>
 
-}, []);
+            <img
+              src={API + "/uploads/" + product.image}
+              width="150"
+            />
 
-if (loading) {
-return <h2 style={{textAlign:"center"}}>Loading products...</h2>;
-}
+            <h3>{product.title}</h3>
 
-return (
+            <button onClick={() => navigate("/product/" + product.id)}>
+              Pre Booking
+            </button>
 
-```
-<section className="products">
+          </div>
 
-  <h2 className="section-title">Our Products</h2>
+        ))
 
-  {products.length === 0 ? (
-
-    <p style={{textAlign:"center"}}>No products available</p>
-
-  ) : (
-
-    <div className="product-grid">
-
-      {products.map((product) => (
-
-        <div
-          key={product.id}
-          className="product-card"
-          onClick={() => navigate(`/product/${product.id}`)}
-        >
-
-          <img
-            src={`${API}/uploads/${product.image}`}
-            alt={product.title}
-          />
-
-          <h3>{product.title}</h3>
-
-          <p>{product.description}</p>
-
-          <p>₹ {product.price}</p>
-
-          <button
-            onClick={(e) => {
-              e.stopPropagation();
-              navigate(`/product/${product.id}`);
-            }}
-          >
-            Pre Booking Now
-          </button>
-
-        </div>
-
-      ))}
+      )}
 
     </div>
 
-  )}
-
-</section>
-```
-
-);
+  );
 
 };
 
