@@ -13,6 +13,10 @@ app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 const adminRoutes = require("./routes/admin");
 const prebookingRoutes = require("./routes/prebooking");
 
+const productRoutes = require("./routes/products");
+
+app.use("/api", productRoutes);
+
 app.use("/api/admin", adminRoutes);
 app.use("/api/prebooking", prebookingRoutes);
 
