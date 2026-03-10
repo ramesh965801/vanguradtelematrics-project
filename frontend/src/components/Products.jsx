@@ -48,8 +48,8 @@ const Products = () => {
                 className={`product-card ${animationClass}`}
                 onClick={() => navigate(`/product/${product.id}`)}
               >
-              <img
-  src={`${import.meta.env.VITE_API_URL.replace('/api/admin','')}/uploads/${product.image}`}
+             <img
+  src={product.image || "/placeholder.png"}
   alt={product.title}
   onError={(e) => { e.target.src = "/placeholder.png"; }}
 />
