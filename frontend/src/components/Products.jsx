@@ -17,10 +17,7 @@ const Products = () => {
     try {
       const res = await fetch(API);
       const data = await res.json();
-      console.log("Products API Response:", data);
-
       if (Array.isArray(data)) setProducts(data);
-      else if (data.products) setProducts(data.products);
       else setProducts([]);
     } catch (error) {
       console.error("Fetch error:", error);
@@ -41,18 +38,9 @@ const Products = () => {
         <div className={`product-grid ${products.length === 1 ? "single-product" : ""}`}>
           {products.map((product, index) => {
             let animationClass = index % 3 === 0 ? "slide-left" : index % 3 === 1 ? "slide-up" : "slide-right";
-
             return (
-              <div
-                key={product.id}
-                className={`product-card ${animationClass}`}
-                onClick={() => navigate(`/product/${product.id}`)}
-              >
-             <img
-  src={product.image || "/placeholder.png"}
-  alt={product.title}
-  onError={(e) => { e.target.src = "/placeholder.png"; }}
-/>
+              <div key={product.id} className={`product-card ${animationClass}`} onClick={() => navigate(`/product/${product.id}`)}>
+                <img src={product.image || "/placeholder.png"} alt={product.title} onError={(e) => { e.target.src = "/placeholder.png"; }} />
                 <h3>{product.title}</h3>
                 <p>{product.description}</p>
                 <div className="buy-wrapper">
