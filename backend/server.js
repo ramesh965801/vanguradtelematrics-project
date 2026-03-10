@@ -8,27 +8,19 @@ const app = express();
 // Middleware
 app.use(cors());
 app.use(express.json());
-
-// Static folder for product images
 app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 
-// Import Routes
-const prebookingRoutes = require("./routes/prebooking");
-const productRoutes = require("./routes/products");
+// Routes
 const adminRoutes = require("./routes/admin");
+const prebookingRoutes = require("./routes/prebooking");
 
-// Use Routes
-app.use("/api/prebooking", prebookingRoutes);
-app.use("/api/products", productRoutes);
 app.use("/api/admin", adminRoutes);
+app.use("/api/prebooking", prebookingRoutes);
 
-// Test Route
+// Test route
 app.get("/", (req, res) => {
   res.send("🚀 Backend Server Running");
 });
 
 const PORT = process.env.PORT || 8080;
-
-app.listen(PORT, () => {
-  console.log(`🚀 Server running on port ${PORT}`);
-});
+app.listen(PORT, () => console.log(`🚀 Server running on port ${PORT}`));
