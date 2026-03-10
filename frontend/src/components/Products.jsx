@@ -4,11 +4,15 @@ import "./Products.css";
 
 const Products = () => {
   const navigate = useNavigate();
+
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
 
+  // API for fetching products
   const API = `${import.meta.env.VITE_API_URL}/products`;
-  const BASE_URL = import.meta.env.VITE_API_URL.replace("/api/admin","");
+
+  // Backend base URL for images
+  const BASE_URL = "https://vanguradtelematrics-project.onrender.com";
 
   useEffect(() => {
     fetchProducts();
@@ -30,17 +34,33 @@ const Products = () => {
     }
   };
 
-  if (loading) return <h2 style={{ textAlign: "center", marginTop: "50px" }}>Loading products...</h2>;
+  if (loading) {
+    return (
+      <h2 style={{ textAlign: "center", marginTop: "50px" }}>
+        Loading products...
+      </h2>
+    );
+  }
 
   return (
     <section className="products">
       <h2 className="section-title">Our Products</h2>
+
       {products.length === 0 ? (
         <p style={{ textAlign: "center" }}>No products available</p>
       ) : (
-        <div className={`product-grid ${products.length === 1 ? "single-product" : ""}`}>
+        <div
+          className={`product-grid ${
+            products.length === 1 ? "single-product" : ""
+          }`}
+        >
           {products.map((product, index) => {
-            let animationClass = index % 3 === 0 ? "slide-left" : index % 3 === 1 ? "slide-up" : "slide-right";
+            let animationClass =
+              index % 3 === 0
+                ? "slide-left"
+                : index % 3 === 1
+                ? "slide-up"
+                : "slide-right";
 
             return (
               <div
@@ -51,10 +71,15 @@ const Products = () => {
                 <img
                   src={`${BASE_URL}/uploads/${product.image}`}
                   alt={product.title}
-                  onError={(e) => (e.target.src = "/placeholder.png")}
+                  loading="lazy"
+                  onError={(e) => {
+                    e.target.src = "/placeholder.png";
+                  }}
                 />
+
                 <h3>{product.title}</h3>
                 <p>{product.description}</p>
+
                 <div className="buy-wrapper">
                   <button
                     onClick={(e) => {
