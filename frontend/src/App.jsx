@@ -14,22 +14,33 @@ import Products from "./components/Products";
 function App() {
   return (
     <BrowserRouter>
-    <Router>
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/products" element={<Products />} />
-        <Route path="/services" element={<Services />} />
-        <Route path="/product/:id" element={<ProductDetails />} />
-        <Route path="/testimonial" element={<Testimonialpage />} />
-        <Route path="/contact" element={<Contact />} />
-        <Route path="/aboutus" element={<Aboutus />} />
-       <Route path="/prebooking/:id" element={<PreBooking />} />
 
-        <Route path="/admin123AvhfGrsFouTRseoPWytrsgfrhiokb" element={<AdminDashboard />} />
+      <Routes>
+
+        <Route path="/" element={<Home />} />
+
+        <Route path="/products" element={<Products />} />
+
+        <Route path="/services" element={<Services />} />
+
+        <Route path="/product/:id" element={<ProductDetails />} />
+
+        <Route path="/testimonial" element={<Testimonialpage />} />
+
+        <Route path="/contact" element={<Contact />} />
+
+        <Route path="/aboutus" element={<Aboutus />} />
+
+        <Route path="/prebooking/:id" element={<PreBooking />} />
+
+        <Route 
+          path="/admin123AvhfGrsFouTRseoPWytrsgfrhiokb" 
+          element={<AdminDashboard />} 
+        />
 
       </Routes>
-    </Router>
-       </BrowserRouter>
+
+    </BrowserRouter>
   );
 }
 
