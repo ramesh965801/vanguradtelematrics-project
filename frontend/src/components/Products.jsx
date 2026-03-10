@@ -9,10 +9,9 @@ const navigate = useNavigate();
 const [products, setProducts] = useState([]);
 const [loading, setLoading] = useState(true);
 
-// Base API URL
+// API URL
 const API = import.meta.env.VITE_API_URL;
 
-// Correct endpoint
 const PRODUCTS_API = `${API}/api/admin/products`;
 
 useEffect(() => {
@@ -72,11 +71,7 @@ return (
 
   ) : (
 
-    <div
-      className={`product-grid ${
-        products.length === 1 ? "single-product" : ""
-      }`}
-    >
+    <div className="product-grid">
 
       {products.map((product, index) => {
 
