@@ -12,15 +12,10 @@ app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 
 // Routes
 const adminRoutes = require("./routes/admin");
-const prebookingRoutes = require("./routes/prebooking");
-
 app.use("/api/admin", adminRoutes);
-app.use("/api/prebooking", prebookingRoutes);
 
-// Test route
-app.get("/", (req, res) => {
-  res.send("🚀 Backend Server Running");
-});
+// Test
+app.get("/", (req, res) => res.send("🚀 Backend Server Running"));
 
 const PORT = process.env.PORT || 8080;
 app.listen(PORT, () => console.log(`🚀 Server running on port ${PORT}`));
