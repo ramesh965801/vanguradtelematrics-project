@@ -77,11 +77,7 @@ const Products = () => {
                 onClick={() => navigate(`/product/${product.id}`)}
               >
 
-        <img
-  src={product.image ? `/uploads/${product.image}` : "/placeholder.png"}
-  alt={product.title}
-  onError={(e) => { e.target.src = "/placeholder.png"; }}
-/>
+       <img src={`${BASE_URL}/uploads/${product.image}`} />
 
                 <h3>{product.title}</h3>
 
