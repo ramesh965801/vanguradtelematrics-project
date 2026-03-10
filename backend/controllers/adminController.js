@@ -1,18 +1,23 @@
 const db = require("../config/db");
 
+// Backend host for full image URLs
 const host = process.env.BACKEND_HOST || `http://localhost:${process.env.PORT || 8080}`;
 
-// ADD PRODUCT
+// ================= ADD PRODUCT =================
 exports.addProduct = (req, res) => {
   const { title, price, description } = req.body;
   const image = req.file ? req.file.filename : null;
 
-  if (!title || !price || !description || !image)
+  if (!title || !price || !description || !image) {
     return res.status(400).json({ message: "All fields required" });
+  }
 
   const sql = "INSERT INTO products (title, price, description, image) VALUES (?, ?, ?, ?)";
   db.query(sql, [title, price, description, image], (err, result) => {
-    if (err) return res.status(500).json({ message: "DB error", error: err });
+    if (err) {
+      console.error("❌ SQL error in addProduct:", err);
+      return res.status(500).json({ message: "DB error", error: err });
+    }
 
     // Return product with full image URL
     res.json({
@@ -28,25 +33,37 @@ exports.addProduct = (req, res) => {
   });
 };
 
+// ================= GET PRODUCTS =================
 exports.getProducts = (req, res) => {
   db.query("SELECT * FROM products ORDER BY id DESC", (err, results) => {
     if (err) {
       console.error("❌ SQL error in getProducts:", err);
       return res.status(500).json({ message: "DB error", error: err });
     }
-    res.json(results);
+
+    // Map each product to include full image URL
+    const productsWithURL = results.map(product => ({
+      ...product,
+      image: product.image ? `${host}/uploads/${product.image}` : null
+    }));
+
+    res.json(productsWithURL);
   });
 };
-// DELETE PRODUCT
+
+// ================= DELETE PRODUCT =================
 exports.deleteProduct = (req, res) => {
   const { id } = req.params;
   db.query("DELETE FROM products WHERE id = ?", [id], (err) => {
-    if (err) return res.status(500).json({ message: "DB error" });
+    if (err) {
+      console.error("❌ SQL error in deleteProduct:", err);
+      return res.status(500).json({ message: "DB error", error: err });
+    }
     res.json({ success: true });
   });
 };
 
-// GET ALL PREBOOKINGS
+// ================= GET ALL PREBOOKINGS =================
 exports.getPrebookings = (req, res) => {
   const sql = `
     SELECT p.*, pr.title AS product_name, pr.price AS price
@@ -55,7 +72,10 @@ exports.getPrebookings = (req, res) => {
     ORDER BY p.created_at DESC
   `;
   db.query(sql, (err, results) => {
-    if (err) return res.status(500).json({ message: "DB error" });
+    if (err) {
+      console.error("❌ SQL error in getPrebookings:", err);
+      return res.status(500).json({ message: "DB error", error: err });
+    }
     res.json(results);
   });
 };
