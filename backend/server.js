@@ -5,22 +5,23 @@ const path = require("path");
 
 const app = express();
 
-// Middleware
 app.use(cors());
 app.use(express.json());
+
 app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 
-// Routes
 const adminRoutes = require("./routes/admin");
-app.use("/api/admin", adminRoutes);
-
 const prebookingRoutes = require("./routes/prebooking");
 
+app.use("/api/admin", adminRoutes);
 app.use("/api/prebooking", prebookingRoutes);
 
-
-// Test
-app.get("/", (req, res) => res.send("🚀 Backend Server Running"));
+app.get("/", (req, res) => {
+  res.send("Backend Running");
+});
 
 const PORT = process.env.PORT || 8080;
-app.listen(PORT, () => console.log(`🚀 Server running on port ${PORT}`));
+
+app.listen(PORT, () => {
+  console.log(`Server running on port ${PORT}`);
+});
