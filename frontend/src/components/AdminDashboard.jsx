@@ -2,12 +2,10 @@ import React, { useState, useEffect } from "react";
 import "./AdminDashboard.css";
 
 const AdminDashboard = () => {
-  // ================= LOGIN =================
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [loginData, setLoginData] = useState({ username: "", password: "" });
   const [loginError, setLoginError] = useState("");
 
-  // ================= DASHBOARD DATA =================
   const [totalProducts, setTotalProducts] = useState(0);
   const [totalPreBookings, setTotalPreBookings] = useState(0);
   const [totalRevenue, setTotalRevenue] = useState(0);
@@ -16,7 +14,6 @@ const AdminDashboard = () => {
   const [activeSection, setActiveSection] = useState("");
   const [success, setSuccess] = useState(false);
 
-  // ================= ADD PRODUCT FORM =================
   const [newProduct, setNewProduct] = useState({
     title: "",
     price: "",
@@ -25,10 +22,9 @@ const AdminDashboard = () => {
   });
   const [preview, setPreview] = useState(null);
 
-  // ================= API BASE =================
-  const API = import.meta.env.VITE_API_URL; // Example: https://vanguradtelematrics-project.onrender.com/api/admin
+  const API = import.meta.env.VITE_API_URL;
 
-  // ================= LOGIN HANDLERS =================
+  // ---------- LOGIN ----------
   const handleLoginChange = (e) => {
     setLoginData({ ...loginData, [e.target.name]: e.target.value });
   };
@@ -45,22 +41,19 @@ const AdminDashboard = () => {
     }
   };
 
-  // ================= LOAD DASHBOARD DATA =================
+  // ---------- LOAD DASHBOARD ----------
   const loadDashboardData = async () => {
     try {
-      // -------- PRODUCTS --------
       const resProducts = await fetch(`${API}/products`);
       const productsData = await resProducts.json();
       setProducts(productsData);
       setTotalProducts(productsData.length);
 
-      // -------- PRE-BOOKINGS --------
       const resPre = await fetch(`${API}/prebookings`);
       const preData = await resPre.json();
       setPreBookings(preData);
       setTotalPreBookings(preData.length);
 
-      // -------- REVENUE --------
       let revenue = 0;
       preData.forEach((item) => {
         if (item.price && item.quantity) revenue += Number(item.price) * Number(item.quantity);
@@ -75,7 +68,7 @@ const AdminDashboard = () => {
     if (isLoggedIn) loadDashboardData();
   }, [isLoggedIn]);
 
-  // ================= FORM CHANGE =================
+  // ---------- FORM CHANGE ----------
   const handleChange = (e) => {
     if (e.target.name === "image") {
       const file = e.target.files[0];
@@ -86,7 +79,7 @@ const AdminDashboard = () => {
     }
   };
 
-  // ================= ADD PRODUCT =================
+  // ---------- ADD PRODUCT ----------
   const handleAddProduct = async (e) => {
     e.preventDefault();
     try {
@@ -113,7 +106,7 @@ const AdminDashboard = () => {
     }
   };
 
-  // ================= DELETE =================
+  // ---------- DELETE ----------
   const handleDelete = async (id, type) => {
     if (!window.confirm("Are you sure?")) return;
     try {
@@ -124,12 +117,10 @@ const AdminDashboard = () => {
     }
   };
 
-  // ================= NAVIGATION =================
   const showProducts = () => setActiveSection("products");
   const showPreBookings = () => setActiveSection("prebookings");
   const showAddProduct = () => setActiveSection("addProduct");
 
-  // ================= LOGIN PAGE =================
   if (!isLoggedIn) {
     return (
       <div className="login-popup">
@@ -144,7 +135,6 @@ const AdminDashboard = () => {
     );
   }
 
-  // ================= DASHBOARD =================
   return (
     <div className="admin-container">
       <h1 className="admin-title">Admin Dashboard</h1>
@@ -168,7 +158,6 @@ const AdminDashboard = () => {
         </div>
       </div>
 
-      {/* PRODUCTS SECTION */}
       {activeSection === "products" && (
         <div className="details-section">
           <h2>Product Details</h2>
@@ -188,7 +177,12 @@ const AdminDashboard = () => {
                 <tr key={item.id}>
                   <td>{item.id}</td>
                   <td>
-                    <img src={item.image || "/placeholder.png"} alt={item.title} width="60" />
+                    <img
+                      src={`${API.replace("/api/admin","")}/uploads/${item.image}`}
+                      alt={item.title}
+                      width="60"
+                      onError={(e) => (e.target.src = "/placeholder.png")}
+                    />
                   </td>
                   <td>{item.title}</td>
                   <td>{`₹ ${item.price}`}</td>
@@ -203,7 +197,6 @@ const AdminDashboard = () => {
         </div>
       )}
 
-      {/* PRE-BOOKINGS SECTION */}
       {activeSection === "prebookings" && (
         <div className="details-section">
           <h2>Pre-Booking Details</h2>
@@ -211,7 +204,7 @@ const AdminDashboard = () => {
             <thead>
               <tr>
                 <th>ID</th>
-                <th>Product ID</th>
+                <th>Product</th>
                 <th>Name</th>
                 <th>Email</th>
                 <th>Phone</th>
@@ -225,7 +218,7 @@ const AdminDashboard = () => {
               {preBookings.map((item) => (
                 <tr key={item.id}>
                   <td>{item.id}</td>
-                  <td>{item.product_id}</td>
+                  <td>{item.product_name}</td>
                   <td>{item.name}</td>
                   <td>{item.email}</td>
                   <td>{item.phone}</td>
@@ -242,7 +235,6 @@ const AdminDashboard = () => {
         </div>
       )}
 
-      {/* ADD PRODUCT SECTION */}
       {activeSection === "addProduct" && (
         <div className="product-form-section">
           <h2>Add New Product</h2>
