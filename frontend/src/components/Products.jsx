@@ -77,11 +77,11 @@ const Products = () => {
                 onClick={() => navigate(`/product/${product.id}`)}
               >
 
-      <img
-  src={product.image ? product.image : "/placeholder.png"}
-  alt={product.title}
-  onError={(e) => { e.target.src = "/placeholder.png"; }}
-/>
+                <img
+              src={product.image || "/placeholder.png"}
+              alt={product.title}
+              onError={(e) => { e.target.src = "/placeholder.png"; }}
+            />
 
                 <h3>{product.title}</h3>
 
