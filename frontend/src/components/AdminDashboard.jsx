@@ -25,8 +25,8 @@ const AdminDashboard = () => {
   });
   const [preview, setPreview] = useState(null);
 
-  // ================= API URL =================
-  const API = import.meta.env.VITE_API_URL;
+  // ================= API BASE =================
+  const API = import.meta.env.VITE_API_URL; // Example: https://vanguradtelematrics-project.onrender.com/api/admin
 
   // ================= LOGIN HANDLERS =================
   const handleLoginChange = (e) => {
@@ -63,9 +63,7 @@ const AdminDashboard = () => {
       // -------- REVENUE --------
       let revenue = 0;
       preData.forEach((item) => {
-        if (item.price && item.quantity) {
-          revenue += Number(item.price) * Number(item.quantity);
-        }
+        if (item.price && item.quantity) revenue += Number(item.price) * Number(item.quantity);
       });
       setTotalRevenue(revenue);
     } catch (err) {
@@ -98,10 +96,7 @@ const AdminDashboard = () => {
       formData.append("description", newProduct.description);
       formData.append("image", newProduct.image);
 
-      const res = await fetch(`${API}/add-product`, {
-        method: "POST",
-        body: formData
-      });
+      const res = await fetch(`${API}/add-product`, { method: "POST", body: formData });
 
       if (res.ok) {
         setSuccess(true);
@@ -141,22 +136,8 @@ const AdminDashboard = () => {
         <form className="login-form" onSubmit={handleLogin}>
           <h2>Admin Login</h2>
           {loginError && <p className="error">{loginError}</p>}
-          <input
-            type="text"
-            name="username"
-            placeholder="Username"
-            value={loginData.username}
-            onChange={handleLoginChange}
-            required
-          />
-          <input
-            type="password"
-            name="password"
-            placeholder="Password"
-            value={loginData.password}
-            onChange={handleLoginChange}
-            required
-          />
+          <input type="text" name="username" placeholder="Username" value={loginData.username} onChange={handleLoginChange} required />
+          <input type="password" name="password" placeholder="Password" value={loginData.password} onChange={handleLoginChange} required />
           <button type="submit">Login</button>
         </form>
       </div>
@@ -173,24 +154,21 @@ const AdminDashboard = () => {
           <h3>Total Products</h3>
           <h2>{totalProducts}</h2>
         </div>
-
         <div className="dashboard-card" onClick={showPreBookings}>
           <h3>Total Pre-Bookings</h3>
           <h2>{totalPreBookings}</h2>
         </div>
-
         <div className="dashboard-card">
           <h3>Total Revenue</h3>
           <h2>{`₹ ${totalRevenue}`}</h2>
         </div>
-
         <div className="dashboard-card" onClick={showAddProduct}>
           <h3>Add Product</h3>
           <h2>+</h2>
         </div>
       </div>
 
-      {/* ================= PRODUCTS SECTION ================= */}
+      {/* PRODUCTS SECTION */}
       {activeSection === "products" && (
         <div className="details-section">
           <h2>Product Details</h2>
@@ -210,12 +188,7 @@ const AdminDashboard = () => {
                 <tr key={item.id}>
                   <td>{item.id}</td>
                   <td>
-                    <img
-                      src={item.image || "/placeholder.png"}
-                      alt={item.title}
-                      width="60"
-                      onError={(e) => { e.target.src = "/placeholder.png"; }}
-                    />
+                    <img src={item.image || "/placeholder.png"} alt={item.title} width="60" />
                   </td>
                   <td>{item.title}</td>
                   <td>{`₹ ${item.price}`}</td>
@@ -230,7 +203,7 @@ const AdminDashboard = () => {
         </div>
       )}
 
-      {/* ================= PRE-BOOKINGS SECTION ================= */}
+      {/* PRE-BOOKINGS SECTION */}
       {activeSection === "prebookings" && (
         <div className="details-section">
           <h2>Pre-Booking Details</h2>
@@ -269,42 +242,16 @@ const AdminDashboard = () => {
         </div>
       )}
 
-      {/* ================= ADD PRODUCT SECTION ================= */}
+      {/* ADD PRODUCT SECTION */}
       {activeSection === "addProduct" && (
         <div className="product-form-section">
           <h2>Add New Product</h2>
           {success && <div>✅ Product Added Successfully!</div>}
           <form onSubmit={handleAddProduct}>
-            <input
-              type="text"
-              name="title"
-              placeholder="Product Title"
-              value={newProduct.title}
-              onChange={handleChange}
-              required
-            />
-            <input
-              type="number"
-              name="price"
-              placeholder="Price"
-              value={newProduct.price}
-              onChange={handleChange}
-              required
-            />
-            <textarea
-              name="description"
-              placeholder="Description"
-              value={newProduct.description}
-              onChange={handleChange}
-              required
-            />
-            <input
-              type="file"
-              name="image"
-              accept="image/*"
-              onChange={handleChange}
-              required
-            />
+            <input type="text" name="title" placeholder="Product Title" value={newProduct.title} onChange={handleChange} required />
+            <input type="number" name="price" placeholder="Price" value={newProduct.price} onChange={handleChange} required />
+            <textarea name="description" placeholder="Description" value={newProduct.description} onChange={handleChange} required />
+            <input type="file" name="image" accept="image/*" onChange={handleChange} required />
             {preview && <img src={preview} width="100" alt="preview" />}
             <button type="submit">Add Product</button>
           </form>
