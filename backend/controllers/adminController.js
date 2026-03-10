@@ -28,21 +28,15 @@ exports.addProduct = (req, res) => {
   });
 };
 
-// GET PRODUCTS
 exports.getProducts = (req, res) => {
   db.query("SELECT * FROM products ORDER BY id DESC", (err, results) => {
-    if (err) return res.status(500).json({ message: "DB error" });
-
-    // Add full image URL for each product
-    const productsWithURL = results.map((product) => ({
-      ...product,
-      image: product.image ? `${host}/uploads/${product.image}` : null
-    }));
-
-    res.json(productsWithURL);
+    if (err) {
+      console.error("❌ SQL error in getProducts:", err);
+      return res.status(500).json({ message: "DB error", error: err });
+    }
+    res.json(results);
   });
 };
-
 // DELETE PRODUCT
 exports.deleteProduct = (req, res) => {
   const { id } = req.params;
