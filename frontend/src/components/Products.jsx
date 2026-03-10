@@ -12,57 +12,55 @@ const [loading, setLoading] = useState(true);
 const API = import.meta.env.VITE_API_URL;
 
 useEffect(() => {
-loadProducts();
-}, []);
-
-const loadProducts = async () => {
 
 ```
-try {
+const fetchProducts = async () => {
 
-  const res = await fetch(`${API}/api/admin/products`);
+  try {
 
-  const data = await res.json();
+    const res = await fetch(`${API}/api/admin/products`);
 
-  if (Array.isArray(data)) {
-    setProducts(data);
-  } else {
-    setProducts([]);
+    const data = await res.json();
+
+    console.log("Products from API:", data);
+
+    if (Array.isArray(data)) {
+      setProducts(data);
+    } else {
+      setProducts([]);
+    }
+
+  } catch (error) {
+
+    console.error("Fetch error:", error);
+
+  } finally {
+
+    setLoading(false);
+
   }
-
-} catch (error) {
-
-  console.error("Error fetching products:", error);
-  setProducts([]);
-
-} finally {
-
-  setLoading(false);
-
-}
-```
 
 };
 
+fetchProducts();
+```
+
+}, [API]);
+
 if (loading) {
-return (
-<h2 style={{ textAlign: "center", marginTop: "50px" }}>
-Loading products... </h2>
-);
+return <h2 style={{textAlign:"center"}}>Loading products...</h2>;
 }
 
 return (
 
 ```
-<section className="products">
+<div className="products">
 
-  <h2 className="section-title">Our Products</h2>
+  <h2>Our Products</h2>
 
   {products.length === 0 ? (
 
-    <p style={{ textAlign: "center" }}>
-      No products available
-    </p>
+    <p>No products available</p>
 
   ) : (
 
@@ -85,7 +83,7 @@ return (
 
           <p>{product.description}</p>
 
-          <p className="price">₹ {product.price}</p>
+          <p>₹ {product.price}</p>
 
           <button
             onClick={(e) => {
@@ -93,7 +91,7 @@ return (
               navigate(`/product/${product.id}`);
             }}
           >
-            Pre Booking Now
+            Pre Booking
           </button>
 
         </div>
@@ -104,7 +102,7 @@ return (
 
   )}
 
-</section>
+</div>
 ```
 
 );
