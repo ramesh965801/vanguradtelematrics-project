@@ -1,6 +1,6 @@
 const db = require("../config/db");
 
-// Add Product
+// ADD PRODUCT
 exports.addProduct = (req, res) => {
   const { title, price, description } = req.body;
   const image = req.file ? req.file.filename : null;
@@ -15,32 +15,24 @@ exports.addProduct = (req, res) => {
   });
 };
 
-// Get All Products
+// GET PRODUCTS
 exports.getProducts = (req, res) => {
   db.query("SELECT * FROM products ORDER BY id DESC", (err, results) => {
-    if (err) return res.status(500).json({ message: "DB error", error: err });
-
-    // Add full image URL for frontend
-    const host = process.env.BACKEND_HOST || `http://localhost:${process.env.PORT || 8080}`;
-    const productsWithUrl = results.map((p) => ({
-      ...p,
-      image: p.image ? `${host}/uploads/${p.image}` : null,
-    }));
-
-    res.json(productsWithUrl);
+    if (err) return res.status(500).json({ message: "DB error" });
+    res.json(results);
   });
 };
 
-// Delete Product
+// DELETE PRODUCT
 exports.deleteProduct = (req, res) => {
   const { id } = req.params;
   db.query("DELETE FROM products WHERE id = ?", [id], (err) => {
-    if (err) return res.status(500).json({ message: "DB error", error: err });
+    if (err) return res.status(500).json({ message: "DB error" });
     res.json({ success: true });
   });
 };
 
-// Get All Prebookings
+// GET PREBOOKINGS
 exports.getPrebookings = (req, res) => {
   const sql = `
     SELECT p.*, pr.title AS product_name, pr.price AS price
@@ -49,7 +41,7 @@ exports.getPrebookings = (req, res) => {
     ORDER BY p.created_at DESC
   `;
   db.query(sql, (err, results) => {
-    if (err) return res.status(500).json({ message: "DB error", error: err });
+    if (err) return res.status(500).json({ message: "DB error" });
     res.json(results);
   });
 };
