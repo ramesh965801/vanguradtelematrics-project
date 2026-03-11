@@ -9,7 +9,7 @@ const Products = () => {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
 
- const API = `${import.meta.env.VITE_API_URL}/api`;
+const API = `${import.meta.env.VITE_API_URL}/api/products`;
   const BASE_URL = import.meta.env.VITE_API_URL;
 
   useEffect(() => {
