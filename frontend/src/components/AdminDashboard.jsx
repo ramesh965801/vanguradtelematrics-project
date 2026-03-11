@@ -289,28 +289,22 @@ const AdminDashboard = () => {
 
             <tbody>
 
-              {products.map((item) => (
-
-                <tr key={item.id}>
-
-                  <td>{item.id}</td>
-
-                  <td>
-
-<img
-  src={item.image_url ? item.image_url : "/placeholder.png"}
-  alt={item.title}
-  width="60"
-/>
-                  </td>
-
-                  <td>{item.title}</td>
-
-                  <td>₹ {item.price}</td>
-
-                  <td>{item.description}</td>
-
-                  <td>
+             {products.map((item) => (
+    <tr key={item.id}>
+      <td>{item.id}</td>
+      <td>
+        <img
+          src={item.image_url ? item.image_url : "/placeholder.png"}
+          alt={item.title || "Product"}
+          width="60"
+        />
+      </td>
+      <td>{item.title || "-"}</td>
+      <td>₹ {item.price || 0}</td>
+      <td>{item.description || "-"}</td>
+    </tr>
+  ))}
+              <td>
 
                     <button onClick={() => handleDelete(item.id, "product")}>
                       Delete
