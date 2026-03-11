@@ -72,3 +72,24 @@ exports.getPrebookings = (req, res) => {
   });
 
 };
+
+// ---------------- DELETE PREBOOKING ----------------
+exports.deletePrebooking = (req, res) => {
+
+  const id = req.params.id;
+
+  db.query(
+    "DELETE FROM prebookings WHERE id=?",
+    [id],
+    (err) => {
+
+      if (err) {
+        return res.status(500).json({ message: "Delete error" });
+      }
+
+      res.json({ success: true });
+
+    }
+  );
+
+};
