@@ -14,13 +14,12 @@ router.get("/products", (req, res) => {
       return res.status(500).json({ error: "Database error" });
     }
 
-    // Add full image URL
     const products = result.map((product) => {
 
       return {
         ...product,
         image_url: product.image
-          ? `${req.protocol}://${req.get("host")}/uploads/${product.image}`
+          ? `${process.env.BASE_URL}/uploads/${product.image}`
           : null
       };
 
