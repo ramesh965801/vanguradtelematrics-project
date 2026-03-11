@@ -2,58 +2,48 @@ import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "./Products.css";
 
+// Import images
+import product1Img from "../assets/images/product1.jpg";
+import product2Img from "../assets/images/product2.jpg";
+import placeholderImg from "../assets/images/placeholder.png";
+
+// Map image names to imported images
+const imageMap = {
+  "product1.jpg": product1Img,
+  "product2.jpg": product2Img,
+};
+
 const Products = () => {
   const navigate = useNavigate();
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
 
   const API = `${import.meta.env.VITE_API_URL}/api/admin`;
-  const BASE_URL = import.meta.env.VITE_API_URL;
 
   useEffect(() => {
     fetchProducts();
   }, []);
 
-  // ✅ Fetch products from Node + Express backend
   const fetchProducts = async () => {
     try {
       const response = await fetch(`${API}/products`, {
         method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-        },
+        headers: { "Content-Type": "application/json" },
       });
-
-      if (!response.ok) {
-        throw new Error("Failed to fetch products");
-      }
-
       const data = await response.json();
-      console.log("Products API Response:", data);
-
-      // Handle different backend response formats
-      if (Array.isArray(data)) {
-        setProducts(data);
-      } else if (data.products && Array.isArray(data.products)) {
-        setProducts(data.products);
-      } else {
-        setProducts([]);
-      }
+      if (Array.isArray(data)) setProducts(data);
+      else if (data.products && Array.isArray(data.products)) setProducts(data.products);
+      else setProducts([]);
     } catch (error) {
-      console.error("Fetch error:", error);
+      console.error(error);
       setProducts([]);
     } finally {
       setLoading(false);
     }
   };
 
-  if (loading) {
-    return (
-      <h2 style={{ textAlign: "center", marginTop: "50px" }}>
-        Loading products...
-      </h2>
-    );
-  }
+  if (loading)
+    return <h2 style={{ textAlign: "center", marginTop: "50px" }}>Loading products...</h2>;
 
   return (
     <section className="products">
@@ -64,10 +54,10 @@ const Products = () => {
       ) : (
         <div className={`product-grid ${products.length === 1 ? "single-product" : ""}`}>
           {products.map((product, index) => {
-            let animationClass = "";
-            if (index % 3 === 0) animationClass = "slide-left";
-            else if (index % 3 === 1) animationClass = "slide-up";
-            else animationClass = "slide-right";
+            const animationClass = index % 3 === 0 ? "slide-left" : index % 3 === 1 ? "slide-up" : "slide-right";
+
+            // Use local image if exists, otherwise placeholder
+            const imgSrc = imageMap[product.image_filename] || placeholderImg;
 
             return (
               <div
@@ -75,13 +65,7 @@ const Products = () => {
                 className={`product-card ${animationClass}`}
                 onClick={() => navigate(`/product/${product.id}`)}
               >
-                <img
-                  src={product.image_url}
-                  alt={product.title}
-                  onError={(e) => {
-                    e.target.src = "/placeholder.png";
-                  }}
-                />
+                <img src={imgSrc} alt={product.title} />
                 <h3>{product.title}</h3>
                 <p>{product.description}</p>
                 <div className="buy-wrapper">
