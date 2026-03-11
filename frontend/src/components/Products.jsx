@@ -83,8 +83,10 @@ const API = `${import.meta.env.VITE_API_URL}/api/products`;
         else animationClass = "slide-right"; 
          return (
            <div key={product.id} className={`product-card ${animationClass}`} onClick={() => navigate(`/product/${product.id}`)} > 
-             <img src={product.image_url} alt={product.title} onError={(e) => 
-             { e.target.src = "/placeholder.png"; }} />
+            <img
+  src={product.image_url}
+  alt={product.title}
+/>
              <h3>{product.title}</h3>
              <p>{product.description}</p> 
              
