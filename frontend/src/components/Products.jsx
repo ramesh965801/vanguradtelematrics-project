@@ -73,41 +73,27 @@ const Products = () => {
 
       <h2 className="section-title">Our Products</h2>
 
-     {products.map((product, index) => {
-
-  return (
-
-    <div
-      key={product.id}
-      className="product-card"
-      onClick={() => navigate(`/product/${product.id}`)}
-    >
-
-      <img
-        src={product.image_url}
-        alt={product.title}
-        onError={(e) => {
-          e.target.src = "/placeholder.png";
-        }}
-      />
-
-      <h3>{product.title}</h3>
-      <p>{product.description}</p>
-
-      <button
-        onClick={(e) => {
-          e.stopPropagation();
-          navigate(`/product/${product.id}`);
-        }}
-      >
-        Pre Booking Now
-      </button>
-
-    </div>
-
-  );
-
-})}
+   {products.length === 0 ? (
+      <p style={{ textAlign: "center" }}
+        >No products available</p> ) : (
+      <div className={`product-grid ${products.length === 1 ? "single-product" : ""}`}> 
+        {products.map((product, index) => 
+        { let animationClass = ""; if (index % 3 === 0) animationClass = "slide-left"; 
+        else if (index % 3 === 1) animationClass = "slide-up";
+        else animationClass = "slide-right"; 
+         return (
+           <div key={product.id} className={`product-card ${animationClass}`} onClick={() => navigate(`/product/${product.id}`)} > 
+             <img src={product.image_url} alt={product.title} onError={(e) => 
+             { e.target.src = "/placeholder.png"; }} />
+             <h3>{product.title}</h3>
+             <p>{product.description}</p> 
+             
+             <div className="buy-wrapper">
+               <button onClick={(e) => { e.stopPropagation(); navigate(`/product/${product.id}`); }} > Pre Booking Now </button>
+             </div> 
+           
+           </div> ); 
+        })}
 
         </div>
 
