@@ -11,5 +11,6 @@ router.get("/products", adminController.getProducts);
 router.delete("/delete-product/:id", adminController.deleteProduct);
 
 router.get("/prebookings", adminController.getPrebookings);
+router.delete("/delete-prebooking/:id", adminController.deletePrebooking);
 
 module.exports = router;
