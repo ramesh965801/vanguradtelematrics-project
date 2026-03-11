@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import Navbar from "./Navbar";
 import Footer from "./Footer";
+import products from "../data/products";   // ✅ import products data
 import "./PreBooking.css";
 
 const PreBooking = () => {
@@ -20,39 +21,24 @@ const PreBooking = () => {
     address: ""
   });
 
-  // ✅ Backend URLs
-  const BASE_URL = import.meta.env.VITE_API_URL;
+  // Backend API for saving booking
+  const PREBOOKING_API = `${import.meta.env.VITE_API_URL}/api/prebooking`;
 
-  const PRODUCT_API = `${BASE_URL}/api/admin/products`;
-  const PREBOOKING_API = `${BASE_URL}/api/prebooking`;
-
-  // Load product
   useEffect(() => {
-    fetchProduct();
+
+    const foundProduct = products.find(
+      (item) => item.id === Number(id)
+    );
+
+    setProduct(foundProduct);
+
   }, [id]);
 
-  const fetchProduct = async () => {
-    try {
-
-      const res = await fetch(PRODUCT_API);
-      const data = await res.json();
-
-      const foundProduct = data.find((item) => item.id === Number(id));
-
-      setProduct(foundProduct);
-
-    } catch (error) {
-      console.error("Error fetching product:", error);
-    }
-  };
-
   const handleChange = (e) => {
-
-    setFormData({
-      ...formData,
+    setFormData(prev => ({
+      ...prev,
       [e.target.name]: e.target.value
-    });
-
+    }));
   };
 
   const handleSubmit = async (e) => {
@@ -72,17 +58,14 @@ const PreBooking = () => {
         },
         body: JSON.stringify({
           product_id: product.id,
-          name: formData.name,
-          email: formData.email,
-          phone: formData.phone,
-          quantity: formData.quantity,
-          address: formData.address
+          product_name: product.title,
+          ...formData
         })
       });
 
       const data = await res.json();
 
-      if (res.ok && data.success) {
+      if (res.ok && (data.success || data.id)) {
 
         alert("✅ Pre-Booking Successful!");
 
@@ -97,24 +80,18 @@ const PreBooking = () => {
         navigate(-1);
 
       } else {
-
-        alert(data.message || "Failed to save prebooking");
-
+        alert(`❌ ${data.message || "Failed to submit pre-booking"}`);
       }
 
     } catch (error) {
-
-      console.error("Prebooking Error:", error);
-      alert("❌ Something went wrong while saving your pre-booking.");
-
+      console.error(error);
+      alert("Something went wrong while saving your pre-booking.");
     }
 
     setLoading(false);
-
   };
 
   if (!product) {
-
     return (
       <div className="prebooking-page">
         <Navbar />
@@ -124,18 +101,19 @@ const PreBooking = () => {
         <Footer />
       </div>
     );
-
   }
 
   return (
-
     <div className="prebooking-page">
 
       <Navbar />
 
       <div className="prebooking-wrapper">
 
-        <button className="back-btn" onClick={() => navigate(-1)}>
+        <button
+          className="back-btn"
+          onClick={() => navigate(-1)}
+        >
           ← Back
         </button>
 
@@ -144,17 +122,18 @@ const PreBooking = () => {
           <h1>Pre-Booking for {product.title}</h1>
 
           {/* Product Image */}
-
           {/* <img
-            src={`${BASE_URL}/uploads/${product.image}`}
+            src={product.image}
             alt={product.title}
             className="product-preview"
-            onError={(e) => (e.target.src = "/placeholder.png")}
           /> */}
 
           <p>Please fill the details below to reserve your product.</p>
 
-          <form className="prebooking-form" onSubmit={handleSubmit}>
+          <form
+            className="prebooking-form"
+            onSubmit={handleSubmit}
+          >
 
             <label>
               Full Name
@@ -228,9 +207,7 @@ const PreBooking = () => {
       <Footer />
 
     </div>
-
   );
-
 };
 
 export default PreBooking;
