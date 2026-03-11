@@ -73,58 +73,41 @@ const Products = () => {
 
       <h2 className="section-title">Our Products</h2>
 
-      {products.length === 0 ? (
-        <p style={{ textAlign: "center" }}>No products available</p>
-      ) : (
+     {products.map((product, index) => {
 
-        <div className={`product-grid ${products.length === 1 ? "single-product" : ""}`}>
+  return (
 
-          {products.map((product, index) => {
+    <div
+      key={product.id}
+      className="product-card"
+      onClick={() => navigate(`/product/${product.id}`)}
+    >
 
-            let animationClass = "";
+      <img
+        src={product.image_url}
+        alt={product.title}
+        onError={(e) => {
+          e.target.src = "/placeholder.png";
+        }}
+      />
 
-            if (index % 3 === 0) animationClass = "slide-left";
-            else if (index % 3 === 1) animationClass = "slide-up";
-            else animationClass = "slide-right";
+      <h3>{product.title}</h3>
+      <p>{product.description}</p>
 
-            return (
+      <button
+        onClick={(e) => {
+          e.stopPropagation();
+          navigate(`/product/${product.id}`);
+        }}
+      >
+        Pre Booking Now
+      </button>
 
-              <div
-                key={product.id}
-                className={`product-card ${animationClass}`}
-                onClick={() => navigate(`/product/${product.id}`)}
-              >
+    </div>
 
-                             <img
-                src={product.image_url}
-                alt={product.title}
-                onError={(e) => {
-                  e.target.src = "/placeholder.png";
-                }}
-              />
+  );
 
-                <h3>{product.title}</h3>
-
-                <p>{product.description}</p>
-
-                <div className="buy-wrapper">
-
-                  <button
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      navigate(`/product/${product.id}`);
-                    }}
-                  >
-                    Pre Booking Now
-                  </button>
-
-                </div>
-
-              </div>
-
-            );
-
-          })}
+})}
 
         </div>
 
