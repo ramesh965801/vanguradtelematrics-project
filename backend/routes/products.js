@@ -2,14 +2,12 @@ const express = require("express");
 const router = express.Router();
 const db = require("../config/db");
 
-router.get("/", (req, res) => {
+// Get all products
+router.get("/products", (req, res) => {
   const sql = "SELECT * FROM products ORDER BY id DESC";
 
   db.query(sql, (err, result) => {
-    if (err) {
-      console.error(err);
-      return res.status(500).json({ error: "Database error" });
-    }
+    if (err) return res.status(500).json({ error: "Database error" });
 
     const products = result.map((product) => ({
       ...product,
