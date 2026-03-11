@@ -3,12 +3,10 @@ import "./AdminDashboard.css";
 
 const AdminDashboard = () => {
 
-  // ---------------- LOGIN ----------------
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [loginData, setLoginData] = useState({ username: "", password: "" });
   const [loginError, setLoginError] = useState("");
 
-  // ---------------- DASHBOARD DATA ----------------
   const [totalProducts, setTotalProducts] = useState(0);
   const [totalPreBookings, setTotalPreBookings] = useState(0);
   const [totalRevenue, setTotalRevenue] = useState(0);
@@ -17,23 +15,9 @@ const AdminDashboard = () => {
   const [preBookings, setPreBookings] = useState([]);
 
   const [activeSection, setActiveSection] = useState("");
-  const [success, setSuccess] = useState(false);
 
-  // ---------------- ADD PRODUCT FORM ----------------
-  const [newProduct, setNewProduct] = useState({
-    title: "",
-    price: "",
-    description: "",
-    image: null
-  });
-
-  const [preview, setPreview] = useState(null);
-
-  // ---------------- API URLs ----------------
   const API = `${import.meta.env.VITE_API_URL}/api/admin`;
-  const BASE_URL = import.meta.env.VITE_API_URL;
 
-  // ---------------- LOGIN ----------------
   const handleLoginChange = (e) =>
     setLoginData({ ...loginData, [e.target.name]: e.target.value });
 
@@ -41,9 +25,7 @@ const AdminDashboard = () => {
 
     e.preventDefault();
 
-    const { username, password } = loginData;
-
-    if (username === "admin" && password === "Admin@123") {
+    if (loginData.username === "admin" && loginData.password === "Admin@123") {
 
       setIsLoggedIn(true);
       setLoginError("");
@@ -56,12 +38,11 @@ const AdminDashboard = () => {
     }
   };
 
-  // ---------------- LOAD DASHBOARD DATA ----------------
+  // ---------------- LOAD DATA ----------------
   const loadDashboardData = async () => {
 
     try {
 
-      // -------- PRODUCTS --------
       const resProducts = await fetch(`${API}/products`);
       const productsData = await resProducts.json();
 
@@ -72,7 +53,6 @@ const AdminDashboard = () => {
       setProducts(productArray);
       setTotalProducts(productArray.length);
 
-      // -------- PREBOOKINGS --------
       const resPre = await fetch(`${API}/prebookings`);
       const preData = await resPre.json();
 
@@ -83,7 +63,7 @@ const AdminDashboard = () => {
       setPreBookings(preArray);
       setTotalPreBookings(preArray.length);
 
-      // -------- REVENUE CALCULATION (FIXED) --------
+      // -------- REVENUE --------
       const revenue = preArray.reduce((sum, item) => {
 
         const price = parseFloat(item.price) || 0;
@@ -102,80 +82,10 @@ const AdminDashboard = () => {
     }
   };
 
-  // ---------------- FORM HANDLER ----------------
-  const handleChange = (e) => {
-
-    if (e.target.name === "image") {
-
-      const file = e.target.files[0];
-
-      setNewProduct((prev) => ({
-        ...prev,
-        image: file
-      }));
-
-      if (file) {
-        setPreview(URL.createObjectURL(file));
-      }
-
-    } else {
-
-      setNewProduct((prev) => ({
-        ...prev,
-        [e.target.name]: e.target.value
-      }));
-
-    }
-  };
-
-  // ---------------- ADD PRODUCT ----------------
-  const handleAddProduct = async (e) => {
-
-    e.preventDefault();
-
-    try {
-
-      const formData = new FormData();
-
-      formData.append("title", newProduct.title);
-      formData.append("price", newProduct.price);
-      formData.append("description", newProduct.description);
-      formData.append("image", newProduct.image);
-
-      const res = await fetch(`${API}/add-product`, {
-        method: "POST",
-        body: formData
-      });
-
-      if (res.ok) {
-
-        setSuccess(true);
-
-        setNewProduct({
-          title: "",
-          price: "",
-          description: "",
-          image: null
-        });
-
-        setPreview(null);
-
-        loadDashboardData();
-
-        setTimeout(() => setSuccess(false), 1500);
-      }
-
-    } catch (err) {
-
-      console.error("Add product error:", err);
-
-    }
-  };
-
-  // ---------------- DELETE FUNCTION ----------------
+  // ---------------- DELETE ----------------
   const handleDelete = async (id, type) => {
 
-    if (!window.confirm("Are you sure you want to delete this?")) return;
+    if (!window.confirm("Are you sure?")) return;
 
     try {
 
@@ -192,15 +102,13 @@ const AdminDashboard = () => {
     }
   };
 
-  // ---------------- NAVIGATION ----------------
   const showProducts = () => setActiveSection("products");
   const showPreBookings = () => setActiveSection("prebookings");
-  const showAddProduct = () => setActiveSection("addProduct");
 
-  // ---------------- LOGIN PAGE ----------------
   if (!isLoggedIn) {
 
     return (
+
       <div className="login-popup">
 
         <form className="login-form" onSubmit={handleLogin}>
@@ -232,17 +140,15 @@ const AdminDashboard = () => {
         </form>
 
       </div>
+
     );
   }
 
-  // ---------------- DASHBOARD ----------------
   return (
 
     <div className="admin-container">
 
       <h1 className="admin-title">Admin Dashboard</h1>
-
-      {/* DASHBOARD CARDS */}
 
       <div className="dashboard-cards">
 
@@ -263,7 +169,7 @@ const AdminDashboard = () => {
 
       </div>
 
-      {/* PRODUCTS TABLE */}
+      {/* PRODUCTS */}
 
       {activeSection === "products" && (
 
@@ -312,7 +218,7 @@ const AdminDashboard = () => {
 
       )}
 
-      {/* PREBOOKING TABLE */}
+      {/* PREBOOKINGS */}
 
       {activeSection === "prebookings" && (
 
@@ -338,36 +244,42 @@ const AdminDashboard = () => {
 
             <tbody>
 
-              {Array.isArray(preBookings) &&
-                preBookings.map((item) => (
+              {preBookings.map((item) => (
 
-                  <tr key={item.id}>
+                <tr key={item.id}>
 
-                    <td>{item.id}</td>
-                    <td>{item.title}</td>
-                    <td>{item.name}</td>
-                    <td>{item.email}</td>
-                    <td>{item.phone}</td>
-                    <td>{item.quantity}</td>
-                    <td>{item.address}</td>
+                  <td>{item.id}</td>
 
-                    <td>
-                      {item.created_at
-                        ? new Date(item.created_at).toLocaleString()
-                        : "-"}
-                    </td>
+                  <td>
+                    {item.title ||
+                     item.product_name ||
+                     item.product_title ||
+                     "Product Deleted"}
+                  </td>
 
-                    <td>
-                      <button
-                        onClick={() => handleDelete(item.id, "prebooking")}
-                      >
-                        Delete
-                      </button>
-                    </td>
+                  <td>{item.name}</td>
+                  <td>{item.email}</td>
+                  <td>{item.phone}</td>
+                  <td>{item.quantity}</td>
+                  <td>{item.address}</td>
 
-                  </tr>
+                  <td>
+                    {item.created_at
+                      ? new Date(item.created_at).toLocaleString()
+                      : "-"}
+                  </td>
 
-                ))}
+                  <td>
+                    <button
+                      onClick={() => handleDelete(item.id, "prebooking")}
+                    >
+                      Delete
+                    </button>
+                  </td>
+
+                </tr>
+
+              ))}
 
             </tbody>
 
@@ -378,7 +290,9 @@ const AdminDashboard = () => {
       )}
 
     </div>
+
   );
+
 };
 
 export default AdminDashboard;
