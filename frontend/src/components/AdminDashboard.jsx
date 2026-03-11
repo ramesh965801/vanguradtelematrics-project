@@ -254,7 +254,7 @@ const AdminDashboard = () => {
                     {item.title ||
                      item.product_name ||
                      item.product_title ||
-                     "Product Deleted"}
+                     "Vehicle Accident Tracker"}
                   </td>
 
                   <td>{item.name}</td>
