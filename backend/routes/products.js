@@ -1,34 +1,26 @@
 const express = require("express");
 const router = express.Router();
+const upload = require("../middleware/cloudinary");
 const db = require("../config/db");
 
-// GET ALL PRODUCTS
-router.get("/products", (req, res) => {
+router.post("/add-product", upload.single("image"), (req, res) => {
+  const { title, price, description } = req.body;
 
-  const sql = "SELECT * FROM products ORDER BY id DESC";
+  const image_url = req.file.path; // Cloudinary returns public URL here
 
-  db.query(sql, (err, result) => {
+  const sql =
+    "INSERT INTO products (title, price, description, image_url) VALUES (?, ?, ?, ?)";
 
+  db.query(sql, [title, price, description, image_url], (err, result) => {
     if (err) {
-      console.log(err);
-      return res.status(500).json({ error: "Database error" });
+      return res.status(500).json({ message: "Database error" });
     }
 
-    const products = result.map((product) => {
-
-      return {
-        ...product,
-        image_url: product.image
-          ? `${process.env.BASE_URL}/uploads/${product.image}`
-          : null
-      };
-
+    res.json({
+      success: true,
+      productId: result.insertId,
     });
-
-    res.json(products);
-
   });
-
 });
 
 module.exports = router;
