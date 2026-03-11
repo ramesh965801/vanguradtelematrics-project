@@ -145,12 +145,12 @@ const PreBooking = () => {
 
           {/* Product Image */}
 
-          <img
+          {/* <img
             src={`${BASE_URL}/uploads/${product.image}`}
             alt={product.title}
             className="product-preview"
             onError={(e) => (e.target.src = "/placeholder.png")}
-          />
+          /> */}
 
           <p>Please fill the details below to reserve your product.</p>
 
