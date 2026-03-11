@@ -38,21 +38,27 @@ const AdminDashboard = () => {
     setLoginData({ ...loginData, [e.target.name]: e.target.value });
 
   const handleLogin = (e) => {
+
     e.preventDefault();
 
     const { username, password } = loginData;
 
     if (username === "admin" && password === "Admin@123") {
+
       setIsLoggedIn(true);
       setLoginError("");
       loadDashboardData();
+
     } else {
+
       setLoginError("Invalid credentials!");
+
     }
   };
 
   // ---------------- LOAD DASHBOARD DATA ----------------
   const loadDashboardData = async () => {
+
     try {
 
       // -------- PRODUCTS --------
@@ -77,15 +83,22 @@ const AdminDashboard = () => {
       setPreBookings(preArray);
       setTotalPreBookings(preArray.length);
 
-      // -------- REVENUE --------
+      // -------- REVENUE CALCULATION (FIXED) --------
       const revenue = preArray.reduce((sum, item) => {
-        return sum + (Number(item.price || 0) * Number(item.quantity || 1));
+
+        const price = parseFloat(item.price) || 0;
+        const quantity = parseInt(item.quantity) || 1;
+
+        return sum + price * quantity;
+
       }, 0);
 
       setTotalRevenue(revenue);
 
     } catch (err) {
+
       console.error("Dashboard load error:", err);
+
     }
   };
 
@@ -153,14 +166,16 @@ const AdminDashboard = () => {
       }
 
     } catch (err) {
+
       console.error("Add product error:", err);
+
     }
   };
 
-  // ---------------- DELETE ----------------
+  // ---------------- DELETE FUNCTION ----------------
   const handleDelete = async (id, type) => {
 
-    if (!window.confirm("Are you sure?")) return;
+    if (!window.confirm("Are you sure you want to delete this?")) return;
 
     try {
 
@@ -171,7 +186,9 @@ const AdminDashboard = () => {
       loadDashboardData();
 
     } catch (err) {
+
       console.error(`Delete ${type} error:`, err);
+
     }
   };
 
@@ -244,11 +261,6 @@ const AdminDashboard = () => {
           <h2>₹ {totalRevenue}</h2>
         </div>
 
-        {/* <div className="dashboard-card" onClick={showAddProduct}>
-          <h3>Add Product</h3>
-          <h2>+</h2>
-        </div> */}
-
       </div>
 
       {/* PRODUCTS TABLE */}
@@ -264,7 +276,6 @@ const AdminDashboard = () => {
             <thead>
               <tr>
                 <th>ID</th>
-                {/* <th>Image</th> */}
                 <th>Title</th>
                 <th>Price</th>
                 <th>Description</th>
@@ -279,19 +290,8 @@ const AdminDashboard = () => {
                 <tr key={item.id}>
 
                   <td>{item.id}</td>
-
-                  {/* <td>
-                    <img
-                      src={`${BASE_URL}/uploads/${item.image}`}
-                      alt={item.title}
-                      width="60"
-                    />
-                  </td> */}
-
                   <td>{item.title}</td>
-
                   <td>₹ {item.price}</td>
-
                   <td>{item.description}</td>
 
                   <td>
@@ -344,17 +344,11 @@ const AdminDashboard = () => {
                   <tr key={item.id}>
 
                     <td>{item.id}</td>
-
-                   <td>{item.title}</td>
-
+                    <td>{item.title}</td>
                     <td>{item.name}</td>
-
                     <td>{item.email}</td>
-
                     <td>{item.phone}</td>
-
                     <td>{item.quantity}</td>
-
                     <td>{item.address}</td>
 
                     <td>
@@ -378,62 +372,6 @@ const AdminDashboard = () => {
             </tbody>
 
           </table>
-
-        </div>
-
-      )}
-
-      {/* ADD PRODUCT FORM */}
-
-      {activeSection === "addProduct" && (
-
-        <div className="product-form-section">
-
-          <h2>Add New Product</h2>
-
-          {success && <div>✅ Product Added Successfully!</div>}
-
-          <form onSubmit={handleAddProduct}>
-
-            <input
-              type="text"
-              name="title"
-              placeholder="Product Title"
-              value={newProduct.title}
-              onChange={handleChange}
-              required
-            />
-
-            <input
-              type="number"
-              name="price"
-              placeholder="Price"
-              value={newProduct.price}
-              onChange={handleChange}
-              required
-            />
-
-            <textarea
-              name="description"
-              placeholder="Description"
-              value={newProduct.description}
-              onChange={handleChange}
-              required
-            />
-
-            <input
-              type="file"
-              name="image"
-              accept="image/*"
-              onChange={handleChange}
-              required
-            />
-
-            {preview && <img src={preview} alt="Preview" width="100" />}
-
-            <button type="submit">Add Product</button>
-
-          </form>
 
         </div>
 
