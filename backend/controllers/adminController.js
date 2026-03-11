@@ -1,7 +1,6 @@
 const db = require("../config/db");
 
 exports.addProduct = (req, res) => {
-
   const { title, price, description } = req.body;
   const image = req.file ? req.file.filename : null;
 
@@ -11,61 +10,44 @@ exports.addProduct = (req, res) => {
   `;
 
   db.query(sql, [title, price, description, image], (err, result) => {
+    if (err) return res.status(500).json({ message: "Database error" });
 
-    if (err) {
-      console.error(err);
-      return res.status(500).json({ message: "Database error" });
-    }
-
-    res.json({ success: true });
-
+    res.json({ success: true, productId: result.insertId });
   });
 };
 
 exports.getProducts = (req, res) => {
-
   db.query("SELECT * FROM products ORDER BY id DESC", (err, results) => {
+    if (err) return res.status(500).json({ message: "Database error" });
 
-    if (err) {
-      console.error(err);
-      return res.status(500).json({ message: "Database error" });
-    }
+    const products = results.map((product) => ({
+      ...product,
+      image_url: product.image
+        ? `${process.env.BASE_URL}/uploads/${product.image}`
+        : null
+    }));
 
-    res.json(results);
-
+    res.json(products);
   });
-
 };
 
 exports.deleteProduct = (req, res) => {
-
   const id = req.params.id;
-
   db.query("DELETE FROM products WHERE id=?", [id], (err) => {
-
     if (err) return res.status(500).json({ message: "Delete error" });
-
     res.json({ success: true });
-
   });
-
 };
 
 exports.getPrebookings = (req, res) => {
-
   const sql = `
-  SELECT p.title,p.price,pr.*
-  FROM prebookings pr
-  JOIN products p ON pr.product_id = p.id
-  ORDER BY pr.id DESC
+    SELECT p.title, p.price, pr.*
+    FROM prebookings pr
+    JOIN products p ON pr.product_id = p.id
+    ORDER BY pr.id DESC
   `;
-
   db.query(sql, (err, results) => {
-
     if (err) return res.status(500).json({ message: "Database error" });
-
     res.json(results);
-
   });
-
 };
