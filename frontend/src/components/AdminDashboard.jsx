@@ -297,8 +297,11 @@ const AdminDashboard = () => {
 
                   <td>
 
-                   <img src={`${API}/uploads/${item.image}`} alt={item.title} width="60" />
-
+<img
+  src={item.image_url ? item.image_url : "/placeholder.png"}
+  alt={item.title}
+  width="60"
+/>
                   </td>
 
                   <td>{item.title}</td>
