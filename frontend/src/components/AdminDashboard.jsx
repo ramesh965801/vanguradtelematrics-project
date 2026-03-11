@@ -280,13 +280,13 @@ const AdminDashboard = () => {
 
                   <td>{item.id}</td>
 
-                  <td>
+                  {/* <td>
                     <img
                       src={`${BASE_URL}/uploads/${item.image}`}
                       alt={item.title}
                       width="60"
                     />
-                  </td>
+                  </td> */}
 
                   <td>{item.title}</td>
 
