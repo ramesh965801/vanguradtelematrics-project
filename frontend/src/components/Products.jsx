@@ -1,7 +1,7 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import "./Products.css";
-import products from "../data/products";   // ✅ shared data
+import products from "../data/products";
 
 const Products = () => {
 
@@ -12,7 +12,17 @@ const Products = () => {
 
       <h2 className="section-title">Our Products</h2>
 
-      <div className="product-grid">
+      <div
+        className="product-grid"
+        style={{
+          display: "grid",
+          gridTemplateColumns:
+            products.length === 1
+              ? "1fr"
+              : "repeat(auto-fit, minmax(280px, 1fr))",
+          justifyItems: products.length === 1 ? "center" : "stretch"
+        }}
+      >
 
         {products.map((product, index) => {
 
@@ -28,6 +38,9 @@ const Products = () => {
               key={product.id}
               className={`product-card ${animationClass}`}
               onClick={() => navigate(`/product/${product.id}`)}
+              style={{
+                maxWidth: products.length === 1 ? "350px" : "100%"
+              }}
             >
 
               <img
