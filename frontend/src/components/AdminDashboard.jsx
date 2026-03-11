@@ -264,7 +264,7 @@ const AdminDashboard = () => {
             <thead>
               <tr>
                 <th>ID</th>
-                <th>Image</th>
+                {/* <th>Image</th> */}
                 <th>Title</th>
                 <th>Price</th>
                 <th>Description</th>
