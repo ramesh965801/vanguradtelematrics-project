@@ -75,13 +75,13 @@ const Products = () => {
                 className={`product-card ${animationClass}`}
                 onClick={() => navigate(`/product/${product.id}`)}
               >
-                <img
-                  src={product.image_url}
-                  alt={product.title}
-                  onError={(e) => {
-                    e.target.src = "/placeholder.png";
-                  }}
-                />
+                  <img
+            src={`${BASE_URL}/uploads/${product.image}`}
+            alt={product.title}
+            onError={(e) => {
+              e.target.src = "/placeholder.png";
+            }}
+          />
                 <h3>{product.title}</h3>
                 <p>{product.description}</p>
                 <div className="buy-wrapper">
