@@ -56,13 +56,16 @@ exports.getPrebookings = (req, res) => {
   const sql = `
   SELECT p.title,p.price,pr.*
   FROM prebookings pr
-  JOIN products p ON pr.product_id = p.id
+  LEFT JOIN products p ON pr.product_id = p.id
   ORDER BY pr.id DESC
   `;
 
   db.query(sql, (err, results) => {
 
-    if (err) return res.status(500).json({ message: "Database error" });
+    if (err) {
+      console.error(err);
+      return res.status(500).json({ message: "Database error" });
+    }
 
     res.json(results);
 
