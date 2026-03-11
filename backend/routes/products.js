@@ -1,5 +1,3 @@
-// routes/products.js
-
 const express = require("express");
 const router = express.Router();
 const db = require("../config/db");
@@ -16,7 +14,19 @@ router.get("/products", (req, res) => {
       return res.status(500).json({ error: "Database error" });
     }
 
-    res.json(result);
+    // Add full image URL
+    const products = result.map((product) => {
+
+      return {
+        ...product,
+        image_url: product.image
+          ? `${req.protocol}://${req.get("host")}/uploads/${product.image}`
+          : null
+      };
+
+    });
+
+    res.json(products);
 
   });
 
