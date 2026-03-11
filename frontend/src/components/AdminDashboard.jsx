@@ -244,10 +244,10 @@ const AdminDashboard = () => {
           <h2>₹ {totalRevenue}</h2>
         </div>
 
-        <div className="dashboard-card" onClick={showAddProduct}>
+        {/* <div className="dashboard-card" onClick={showAddProduct}>
           <h3>Add Product</h3>
           <h2>+</h2>
-        </div>
+        </div> */}
 
       </div>
 
