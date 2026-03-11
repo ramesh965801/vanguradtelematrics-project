@@ -65,7 +65,7 @@ const Products = () => {
                 className={`product-card ${animationClass}`}
                 onClick={() => navigate(`/product/${product.id}`)}
               >
-                <img src={imgSrc} alt={product.title} />
+                <img src={product1Img} alt={product.title} />
                 <h3>{product.title}</h3>
                 <p>{product.description}</p>
                 <div className="buy-wrapper">
