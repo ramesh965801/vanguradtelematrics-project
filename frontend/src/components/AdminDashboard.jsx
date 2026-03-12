@@ -25,6 +25,7 @@ const AdminDashboard = () => {
 
   // LOGIN
   const handleLogin = (e) => {
+
     e.preventDefault();
 
     if (loginData.username === "admin" && loginData.password === "Admin@123") {
@@ -35,26 +36,20 @@ const AdminDashboard = () => {
       loadDashboardData();
 
     } else {
+
       setLoginError("Invalid credentials!");
+
     }
   };
 
-  // LOAD DASHBOARD DATA
+  // LOAD DATA
   const loadDashboardData = async () => {
 
     try {
 
-      // SET PRODUCTS
       setProducts(productsData);
       setTotalProducts(productsData.length);
 
-      // CREATE PRICE MAP
-      const priceMap = {};
-      productsData.forEach((p) => {
-        priceMap[p.title.toLowerCase()] = p.price;
-      });
-
-      // FETCH BOOKINGS
       const res = await fetch(`${API}/prebookings`);
       const data = await res.json();
 
@@ -63,38 +58,38 @@ const AdminDashboard = () => {
       setPreBookings(preArray);
       setTotalPreBookings(preArray.length);
 
-      
-  // CALCULATE REVENUE
-let revenue = 0;
+      // CALCULATE REVENUE
+      let revenue = 0;
 
-preArray.forEach((booking) => {
+      preArray.forEach((booking) => {
 
-  const bookingTitle =
-    booking.title ||
-    booking.product_title ||
-    "";
+        const bookingTitle =
+          booking.product_name || "";
 
-  // find product from products.js
-  const product = productsData.find(
-    (p) =>
-      p.title.trim().toLowerCase() ===
-      bookingTitle.trim().toLowerCase()
-  );
+        const product = productsData.find(
+          (p) =>
+            p.title.trim().toLowerCase() ===
+            bookingTitle.trim().toLowerCase()
+        );
 
-  // price from products.js or booking price
-  const price = product
-    ? Number(product.price)
-    : Number(booking.price || 0);
+        const price = product ? Number(product.price) : 0;
 
-  const quantity = Number(booking.quantity || 1);
+        const quantity = Number(booking.quantity || 1);
 
-  revenue += price * quantity;
+        revenue += price * quantity;
 
-});
+      });
 
-setTotalRevenue(revenue);
+      setTotalRevenue(revenue);
 
-  // DELETE BOOKING
+    } catch (err) {
+
+      console.error("Dashboard load error:", err);
+
+    }
+  };
+
+  // DELETE
   const handleDelete = async (id) => {
 
     if (!window.confirm("Delete this booking?")) return;
@@ -266,7 +261,7 @@ setTotalRevenue(revenue);
 
                   <td>{item.id}</td>
 
-                  <td>{item.title || item.product_title}</td>
+                  <td>{item.product_name}</td>
 
                   <td>{item.name}</td>
 
