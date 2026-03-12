@@ -63,35 +63,36 @@ const AdminDashboard = () => {
       setPreBookings(preArray);
       setTotalPreBookings(preArray.length);
 
-      // CALCULATE REVENUE
-      let revenue = 0;
+      
+  // CALCULATE REVENUE
+let revenue = 0;
 
-      preArray.forEach((booking) => {
+preArray.forEach((booking) => {
 
-        const title =
-          booking.title ||
-          booking.product_title ||
-          "";
+  const bookingTitle =
+    booking.title ||
+    booking.product_title ||
+    "";
 
-        const productPrice =
-          priceMap[title.toLowerCase()] ||
-          parseFloat(booking.price) ||
-          0;
+  // find product from products.js
+  const product = productsData.find(
+    (p) =>
+      p.title.trim().toLowerCase() ===
+      bookingTitle.trim().toLowerCase()
+  );
 
-        const quantity = parseInt(booking.quantity) || 1;
+  // price from products.js or booking price
+  const price = product
+    ? Number(product.price)
+    : Number(booking.price || 0);
 
-        revenue += productPrice * quantity;
+  const quantity = Number(booking.quantity || 1);
 
-      });
+  revenue += price * quantity;
 
-      setTotalRevenue(revenue);
+});
 
-    } catch (err) {
-
-      console.error("Dashboard load error:", err);
-
-    }
-  };
+setTotalRevenue(revenue);
 
   // DELETE BOOKING
   const handleDelete = async (id) => {
