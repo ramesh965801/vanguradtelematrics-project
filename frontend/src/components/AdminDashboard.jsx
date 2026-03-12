@@ -261,7 +261,7 @@ const AdminDashboard = () => {
 
                   <td>{item.id}</td>
 
-                  <td>{item.product_name}</td>
+                  <td>{product.title}</td>
 
                   <td>{item.name}</td>
 
