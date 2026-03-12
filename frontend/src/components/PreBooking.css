@@ -197,3 +197,68 @@
     font-size: 14px;
   }
 }
+
+
+
+
+/* PRODUCT SIDE */
+
+.product-details{
+  flex:1;
+  text-align:center;
+}
+
+.product-preview{
+  width:100%;
+  max-width:300px;
+  border-radius:10px;
+}
+
+.product-title{
+  margin-top:15px;
+  font-size:24px;
+}
+
+.product-price{
+  font-size:22px;
+  color:green;
+  font-weight:bold;
+}
+
+.product-description{
+  margin-top:10px;
+  color:#555;
+}
+
+/* FORM SIDE */
+
+.booking-form{
+  flex:1;
+}
+
+.prebooking-form{
+  display:flex;
+  flex-direction:column;
+  gap:15px;
+}
+
+.prebooking-form input,
+.prebooking-form textarea{
+  width:100%;
+  padding:10px;
+  border:1px solid #ccc;
+  border-radius:5px;
+}
+
+.submit-btn{
+  padding:12px;
+  background:#007bff;
+  color:white;
+  border:none;
+  border-radius:6px;
+  cursor:pointer;
+}
+
+.submit-btn:hover{
+  background:#0056b3;
+}
