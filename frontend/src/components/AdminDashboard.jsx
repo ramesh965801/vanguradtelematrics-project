@@ -1,7 +1,5 @@
 import React, { useState } from "react";
 import "./AdminDashboard.css";
-
-// correct import
 import productsData from "../data/products";
 
 const AdminDashboard = () => {
@@ -27,6 +25,7 @@ const AdminDashboard = () => {
 
   // LOGIN
   const handleLogin = (e) => {
+
     e.preventDefault();
 
     if (loginData.username === "admin" && loginData.password === "Admin@123") {
@@ -52,7 +51,7 @@ const AdminDashboard = () => {
       setProducts(productsData);
       setTotalProducts(productsData.length);
 
-      // pre bookings from backend
+      // get bookings
       const res = await fetch(`${API}/prebookings`);
       const data = await res.json();
 
@@ -61,10 +60,17 @@ const AdminDashboard = () => {
       setPreBookings(preArray);
       setTotalPreBookings(preArray.length);
 
-      const revenue = preArray.reduce((sum, item) => {
+      // DYNAMIC REVENUE CALCULATION
+      const revenue = preArray.reduce((sum, booking) => {
 
-        const price = parseFloat(item.price) || 0;
-        const quantity = parseInt(item.quantity) || 1;
+        const product = productsData.find(
+          (p) =>
+            p.title === booking.product_title ||
+            p.title === booking.title
+        );
+
+        const price = product ? product.price : 0;
+        const quantity = parseInt(booking.quantity) || 1;
 
         return sum + price * quantity;
 
@@ -107,6 +113,7 @@ const AdminDashboard = () => {
 
     return (
       <div className="login-popup">
+
         <form className="login-form" onSubmit={handleLogin}>
 
           <h2>Admin Login</h2>
@@ -134,6 +141,7 @@ const AdminDashboard = () => {
           <button type="submit">Login</button>
 
         </form>
+
       </div>
     );
   }
@@ -217,7 +225,7 @@ const AdminDashboard = () => {
 
       )}
 
-      {/* PRE BOOKINGS */}
+      {/* PREBOOKINGS */}
 
       {activeSection === "prebookings" && (
 
@@ -249,7 +257,7 @@ const AdminDashboard = () => {
 
                   <td>{item.id}</td>
 
-                  <td>{item.product_title || "Vehicle Accident Tracker"}</td>
+                  <td>{item.product_title || item.title}</td>
 
                   <td>{item.name}</td>
 
