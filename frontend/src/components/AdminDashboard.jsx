@@ -25,7 +25,6 @@ const AdminDashboard = () => {
 
   // LOGIN
   const handleLogin = (e) => {
-
     e.preventDefault();
 
     if (loginData.username === "admin" && loginData.password === "Admin@123") {
@@ -36,22 +35,26 @@ const AdminDashboard = () => {
       loadDashboardData();
 
     } else {
-
       setLoginError("Invalid credentials!");
-
     }
   };
 
-  // LOAD DATA
+  // LOAD DASHBOARD DATA
   const loadDashboardData = async () => {
 
     try {
 
-      // Products from products.js
+      // SET PRODUCTS
       setProducts(productsData);
       setTotalProducts(productsData.length);
 
-      // Get bookings
+      // CREATE PRICE MAP
+      const priceMap = {};
+      productsData.forEach((p) => {
+        priceMap[p.title.toLowerCase()] = p.price;
+      });
+
+      // FETCH BOOKINGS
       const res = await fetch(`${API}/prebookings`);
       const data = await res.json();
 
@@ -60,24 +63,26 @@ const AdminDashboard = () => {
       setPreBookings(preArray);
       setTotalPreBookings(preArray.length);
 
-      // Revenue calculation
-      const revenue = preArray.reduce((sum, booking) => {
+      // CALCULATE REVENUE
+      let revenue = 0;
 
-        const product = productsData.find(
-          (p) =>
-            p.title.toLowerCase() ===
-            (booking.title || "").toLowerCase()
-        );
+      preArray.forEach((booking) => {
 
-        const price = product
-          ? product.price
-          : parseFloat(booking.price) || 0;
+        const title =
+          booking.title ||
+          booking.product_title ||
+          "";
+
+        const productPrice =
+          priceMap[title.toLowerCase()] ||
+          parseFloat(booking.price) ||
+          0;
 
         const quantity = parseInt(booking.quantity) || 1;
 
-        return sum + price * quantity;
+        revenue += productPrice * quantity;
 
-      }, 0);
+      });
 
       setTotalRevenue(revenue);
 
@@ -88,7 +93,7 @@ const AdminDashboard = () => {
     }
   };
 
-  // DELETE PREBOOKING
+  // DELETE BOOKING
   const handleDelete = async (id) => {
 
     if (!window.confirm("Delete this booking?")) return;
@@ -228,7 +233,7 @@ const AdminDashboard = () => {
 
       )}
 
-      {/* PRE BOOKINGS */}
+      {/* PREBOOKINGS */}
 
       {activeSection === "prebookings" && (
 
@@ -260,7 +265,9 @@ const AdminDashboard = () => {
 
                   <td>{item.id}</td>
 
-                  <td>{item.title}</td>
+                  <td>
+                    {item.title || item.product_title}
+                  </td>
 
                   <td>{item.name}</td>
 
