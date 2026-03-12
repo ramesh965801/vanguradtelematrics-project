@@ -124,35 +124,10 @@ const PreBooking = () => {
 
         <div className="prebooking-card">
 
-          {/* LEFT SIDE PRODUCT DETAILS */}
-          <div className="product-details">
-
-            <img
-              src={product.image}
-              alt={product.title}
-              className="product-preview"
-            />
-
-            <h2 className="product-title">
-              {product.title}
-            </h2>
-
-            <p className="product-price">
-              ₹{product.price}
-            </p>
-
-            <p className="product-description">
-              {product.description}
-            </p>
-
-          </div>
-
-
-          {/* RIGHT SIDE BOOKING FORM */}
+          {/* LEFT SIDE - BOOKING FORM */}
           <div className="booking-form">
 
             <h1>Pre-Booking</h1>
-
             <p>Please fill the details below to reserve your product.</p>
 
             <form
@@ -224,6 +199,30 @@ const PreBooking = () => {
               </button>
 
             </form>
+
+          </div>
+
+
+          {/* RIGHT SIDE - PRODUCT DETAILS */}
+          <div className="product-details">
+
+            <img
+              src={product.image}
+              alt={product.title}
+              className="product-preview"
+            />
+
+            <h2 className="product-title">
+              {product.title}
+            </h2>
+
+            <p className="product-price">
+              ₹{product.price}
+            </p>
+
+            <p className="product-description">
+              {product.description}
+            </p>
 
           </div>
 
