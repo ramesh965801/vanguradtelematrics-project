@@ -1,12 +1,17 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "./AdminDashboard.css";
+
+// Import products from products.js
+import productsData from "../products";
 
 const AdminDashboard = () => {
 
+  // ---------------- LOGIN ----------------
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [loginData, setLoginData] = useState({ username: "", password: "" });
   const [loginError, setLoginError] = useState("");
 
+  // ---------------- DASHBOARD DATA ----------------
   const [totalProducts, setTotalProducts] = useState(0);
   const [totalPreBookings, setTotalPreBookings] = useState(0);
   const [totalRevenue, setTotalRevenue] = useState(0);
@@ -18,6 +23,7 @@ const AdminDashboard = () => {
 
   const API = `${import.meta.env.VITE_API_URL}/api/admin`;
 
+  // ---------------- LOGIN ----------------
   const handleLoginChange = (e) =>
     setLoginData({ ...loginData, [e.target.name]: e.target.value });
 
@@ -29,6 +35,7 @@ const AdminDashboard = () => {
 
       setIsLoggedIn(true);
       setLoginError("");
+
       loadDashboardData();
 
     } else {
@@ -36,6 +43,7 @@ const AdminDashboard = () => {
       setLoginError("Invalid credentials!");
 
     }
+
   };
 
   // ---------------- LOAD DATA ----------------
@@ -43,16 +51,11 @@ const AdminDashboard = () => {
 
     try {
 
-      const resProducts = await fetch(`${API}/products`);
-      const productsData = await resProducts.json();
+      // Load products from products.js
+      setProducts(productsData);
+      setTotalProducts(productsData.length);
 
-      const productArray = Array.isArray(productsData)
-        ? productsData
-        : productsData.data || [];
-
-      setProducts(productArray);
-      setTotalProducts(productArray.length);
-
+      // Load PreBookings from backend
       const resPre = await fetch(`${API}/prebookings`);
       const preData = await resPre.json();
 
@@ -63,7 +66,7 @@ const AdminDashboard = () => {
       setPreBookings(preArray);
       setTotalPreBookings(preArray.length);
 
-      // -------- REVENUE --------
+      // Calculate revenue
       const revenue = preArray.reduce((sum, item) => {
 
         const price = parseFloat(item.price) || 0;
@@ -80,16 +83,17 @@ const AdminDashboard = () => {
       console.error("Dashboard load error:", err);
 
     }
+
   };
 
-  // ---------------- DELETE ----------------
-  const handleDelete = async (id, type) => {
+  // ---------------- DELETE PREBOOKING ----------------
+  const handleDelete = async (id) => {
 
     if (!window.confirm("Are you sure?")) return;
 
     try {
 
-      await fetch(`${API}/delete-${type}/${id}`, {
+      await fetch(`${API}/delete-prebooking/${id}`, {
         method: "DELETE"
       });
 
@@ -97,14 +101,16 @@ const AdminDashboard = () => {
 
     } catch (err) {
 
-      console.error(`Delete ${type} error:`, err);
+      console.error("Delete error:", err);
 
     }
+
   };
 
   const showProducts = () => setActiveSection("products");
   const showPreBookings = () => setActiveSection("prebookings");
 
+  // ---------------- LOGIN PAGE ----------------
   if (!isLoggedIn) {
 
     return (
@@ -144,6 +150,7 @@ const AdminDashboard = () => {
     );
   }
 
+  // ---------------- DASHBOARD ----------------
   return (
 
     <div className="admin-container">
@@ -169,7 +176,7 @@ const AdminDashboard = () => {
 
       </div>
 
-      {/* PRODUCTS */}
+      {/* ---------------- PRODUCTS ---------------- */}
 
       {activeSection === "products" && (
 
@@ -182,10 +189,10 @@ const AdminDashboard = () => {
             <thead>
               <tr>
                 <th>ID</th>
+                <th>Image</th>
                 <th>Title</th>
                 <th>Price</th>
                 <th>Description</th>
-                <th>Action</th>
               </tr>
             </thead>
 
@@ -196,15 +203,20 @@ const AdminDashboard = () => {
                 <tr key={item.id}>
 
                   <td>{item.id}</td>
-                  <td>{item.title}</td>
-                  <td>₹ {item.price}</td>
-                  <td>{item.description}</td>
 
                   <td>
-                    <button onClick={() => handleDelete(item.id, "product")}>
-                      Delete
-                    </button>
+                    <img
+                      src={item.image}
+                      alt={item.title}
+                      width="80"
+                    />
                   </td>
+
+                  <td>{item.title}</td>
+
+                  <td>₹ {item.price}</td>
+
+                  <td>{item.description}</td>
 
                 </tr>
 
@@ -218,7 +230,7 @@ const AdminDashboard = () => {
 
       )}
 
-      {/* PREBOOKINGS */}
+      {/* ---------------- PREBOOKINGS ---------------- */}
 
       {activeSection === "prebookings" && (
 
@@ -258,9 +270,13 @@ const AdminDashboard = () => {
                   </td>
 
                   <td>{item.name}</td>
+
                   <td>{item.email}</td>
+
                   <td>{item.phone}</td>
+
                   <td>{item.quantity}</td>
+
                   <td>{item.address}</td>
 
                   <td>
@@ -270,9 +286,7 @@ const AdminDashboard = () => {
                   </td>
 
                   <td>
-                    <button
-                      onClick={() => handleDelete(item.id, "prebooking")}
-                    >
+                    <button onClick={() => handleDelete(item.id)}>
                       Delete
                     </button>
                   </td>
