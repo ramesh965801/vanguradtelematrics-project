@@ -140,11 +140,11 @@
 
 .product-details {
     flex: 1;
-    background: #576971;
+   
     padding: 25px;
     border-radius: 10px;
     text-align: center;
-    box-shadow: 0 4px 12px #2e16161a;
+   
 }
 
 .product-preview{
