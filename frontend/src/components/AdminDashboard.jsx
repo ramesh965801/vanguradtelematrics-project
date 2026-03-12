@@ -42,7 +42,7 @@ const AdminDashboard = () => {
     }
   };
 
-  // LOAD DATA
+  // LOAD DASHBOARD DATA
   const loadDashboardData = async () => {
 
     try {
@@ -63,17 +63,11 @@ const AdminDashboard = () => {
 
       preArray.forEach((booking) => {
 
-        const bookingTitle =
-          booking.product_name || "";
-
         const product = productsData.find(
-          (p) =>
-            p.title.trim().toLowerCase() ===
-            bookingTitle.trim().toLowerCase()
+          (p) => p.id === booking.product_id
         );
 
         const price = product ? Number(product.price) : 0;
-
         const quantity = Number(booking.quantity || 1);
 
         revenue += price * quantity;
@@ -89,7 +83,7 @@ const AdminDashboard = () => {
     }
   };
 
-  // DELETE
+  // DELETE BOOKING
   const handleDelete = async (id) => {
 
     if (!window.confirm("Delete this booking?")) return;
@@ -261,7 +255,7 @@ const AdminDashboard = () => {
 
                   <td>{item.id}</td>
 
-                  <td>{product.title}</td>
+                  <td>{item.product_name}</td>
 
                   <td>{item.name}</td>
 
