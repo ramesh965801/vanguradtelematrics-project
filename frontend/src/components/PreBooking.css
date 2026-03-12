@@ -1,226 +1,84 @@
 /* ============================= */
-/* PRE-BOOKING PAGE STYLES       */
+/* PRE-BOOKING PAGE              */
 /* ============================= */
 
-.prebooking-page {
+.prebooking-page{
   font-family: 'Segoe UI', sans-serif;
-  background: #466471;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-}
-
-/* Wrapper for content */
-.prebooking-wrapper {
-  flex: 1;
-  max-width: 900px;
-  margin: 86px auto 40px auto;
-  padding: 20px;
-}
-
-/* ===== Back Button ===== */
-.back-btn {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  background: #fff;
-  color: #27ae60; /* primary green */
-  border: 2px solid #27ae60;
-  padding: 10px 20px;
-  margin-bottom: 30px;
-  cursor: pointer;
-  border-radius: 50px; /* pill shape */
-  font-size: 15px;
-  font-weight: 600;
-  text-decoration: none;
-  position: relative;
-  overflow: hidden;
-  transition: all 0.3s ease;
-  box-shadow: 0 4px 12px rgba(39, 174, 96, 0.2);
-}
-
-.back-btn span.arrow {
-  display: inline-block;
-  transition: transform 0.3s ease;
-}
-
-/* Hover effect */
-.back-btn:hover {
-  background: #27ae60;
-  color: #fff;
-  box-shadow: 0 6px 16px rgba(39, 174, 96, 0.3);
-}
-
-.back-btn:hover span.arrow {
-  transform: translateX(-6px);
-}
-
-/* ===== Card container ===== */
-.prebooking-card {
-  background: #8eb5c6;
-  padding: 35px 30px;
-  border-radius: 12px;
-  box-shadow: 0 8px 24px rgba(0,0,0,0.1);
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
-  text-align: center;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-}
-.prebooking-card:hover {
-  transform: translateY(-3px);
-  box-shadow: 0 12px 28px rgba(0,0,0,0.15);
-}
-
-/* Heading */
-.prebooking-card h1 {
-  font-size: 28px;
-  color: #222;
-  margin-bottom: 8px;
-}
-
-/* Paragraph */
-.prebooking-card p {
-  font-size: 16px;
-  color: #555;
-  margin-bottom: 20px;
-}
-
-/* Form Styles */
-.prebooking-form {
-  display: flex;
-  flex-direction: column;
-  gap: 15px;
-  text-align: left;
-}
-
-/* Labels */
-.prebooking-form label {
-  display: flex;
-  flex-direction: column;
-  font-weight: 500;
-  color: #333;
-  font-size: 15px;
-}
-
-/* Inputs and Textarea */
-.prebooking-form input,
-.prebooking-form textarea {
-  margin-top: 6px;
-  padding: 12px 14px;
-  border-radius: 6px;
-  border: 1px solid #ccc;
-  font-size: 15px;
-  transition: 0.3s;
-}
-
-.prebooking-form input:focus,
-.prebooking-form textarea:focus {
-  outline: none;
-  border-color: #27ae60;
-  box-shadow: 0 0 6px rgba(39, 174, 96, 0.3);
-}
-
-/* Textarea styling */
-.prebooking-form textarea {
-  resize: vertical;
-  min-height: 80px;
-  max-height: 200px;
-}
-
-/* Submit Button */
-.submit-btn {
-  background: #5d9a77;
-  color: #fff;
-  border: none;
-  padding: 14px 25px;
-  font-size: 16px;
-  font-weight: 600;
-  border-radius: 8px;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  align-self: center;
-  width: 100%;
-  max-width: 300px;
-}
-.submit-btn:hover {
-  background: #1e8449;
-  transform: translateY(-2px);
-}
-
-/* ===== Responsive Adjustments ===== */
-@media (max-width: 768px) {
-  .prebooking-wrapper {
-    padding: 15px;
-    margin: 75px auto 30px auto;
-  }
-
-  .prebooking-card {
-    padding: 25px 20px;
-  }
-
-  .prebooking-card h1 {
-    font-size: 24px;
-  }
-
-  .prebooking-form input,
-  .prebooking-form textarea {
-    font-size: 14px;
-    padding: 10px 12px;
-  }
-
-  .submit-btn {
-    font-size: 15px;
-    padding: 12px 20px;
-  }
-}
-
-@media (max-width: 480px) {
-  .prebooking-card {
-    padding: 20px 15px;
-  }
-
-  .prebooking-card h1 {
-    font-size: 22px;
-  }
-
-  .prebooking-card p {
-    font-size: 14px;
-  }
-
-  .submit-btn {
-    padding: 10px 16px;
-  }
-
-  .back-btn {
-    padding: 8px 16px;
-    font-size: 14px;
-  }
+  background:#466471;
+  min-height:100vh;
+  display:flex;
+  flex-direction:column;
 }
 
 
-
+/* ============================= */
+/* WRAPPER                       */
+/* ============================= */
 
 .prebooking-wrapper{
+  flex:1;
   max-width:1100px;
-  margin:auto;
-  padding:40px 20px;
+  margin:90px auto 40px;
+  padding:20px;
 }
+
+
+/* ============================= */
+/* BACK BUTTON                   */
+/* ============================= */
+
+.back-btn{
+  background:#fff;
+  color:#27ae60;
+  border:2px solid #27ae60;
+  padding:10px 20px;
+  border-radius:50px;
+  font-weight:600;
+  cursor:pointer;
+  margin-bottom:25px;
+  transition:0.3s;
+}
+
+.back-btn:hover{
+  background:#27ae60;
+  color:#fff;
+}
+
+
+/* ============================= */
+/* MAIN CARD                     */
+/* ============================= */
 
 .prebooking-card{
   display:flex;
   gap:40px;
-  background:white;
-  padding:30px;
-  border-radius:10px;
-  box-shadow:0 5px 15px rgba(0,0,0,0.1);
+  background:#8eb5c6;
+  padding:35px;
+  border-radius:12px;
+  box-shadow:0 8px 24px rgba(0,0,0,0.15);
 }
 
-/* FORM */
+
+/* ============================= */
+/* LEFT SIDE - BOOKING FORM      */
+/* ============================= */
 
 .booking-form{
   flex:1;
 }
+
+.booking-form h1{
+  font-size:28px;
+  margin-bottom:10px;
+}
+
+.booking-form p{
+  color:#333;
+  margin-bottom:20px;
+}
+
+
+/* FORM */
 
 .prebooking-form{
   display:flex;
@@ -228,64 +86,140 @@
   gap:15px;
 }
 
-.prebooking-form input,
-.prebooking-form textarea{
-  width:100%;
-  padding:10px;
-  border:1px solid #ccc;
-  border-radius:6px;
+.prebooking-form label{
+  display:flex;
+  flex-direction:column;
+  font-weight:500;
 }
 
-/* PRODUCT */
+.prebooking-form input,
+.prebooking-form textarea{
+  margin-top:6px;
+  padding:12px;
+  border-radius:6px;
+  border:1px solid #ccc;
+  font-size:15px;
+}
+
+.prebooking-form input:focus,
+.prebooking-form textarea:focus{
+  outline:none;
+  border-color:#27ae60;
+  box-shadow:0 0 6px rgba(39,174,96,0.3);
+}
+
+.prebooking-form textarea{
+  resize:vertical;
+  min-height:80px;
+}
+
+
+/* SUBMIT BUTTON */
+
+.submit-btn{
+  background:#27ae60;
+  color:white;
+  border:none;
+  padding:14px;
+  border-radius:8px;
+  font-size:16px;
+  font-weight:600;
+  cursor:pointer;
+  margin-top:10px;
+  transition:0.3s;
+}
+
+.submit-btn:hover{
+  background:#1e8449;
+}
+
+
+/* ============================= */
+/* RIGHT SIDE - PRODUCT CARD     */
+/* ============================= */
 
 .product-details{
   flex:1;
+  background:white;
+  padding:25px;
+  border-radius:10px;
   text-align:center;
+  box-shadow:0 4px 12px rgba(0,0,0,0.1);
 }
 
 .product-preview{
   width:100%;
-  max-width:300px;
+  max-width:280px;
   border-radius:10px;
+  margin-bottom:15px;
 }
 
 .product-title{
-  margin-top:15px;
-  font-size:24px;
+  font-size:22px;
+  font-weight:600;
+  margin-bottom:10px;
 }
 
 .product-price{
-  font-size:22px;
+  font-size:20px;
   font-weight:bold;
-  color:green;
+  color:#27ae60;
+  margin-bottom:10px;
 }
 
 .product-description{
-  margin-top:10px;
+  font-size:14px;
   color:#555;
+  line-height:1.5;
 }
 
-/* BUTTON */
 
-.submit-btn{
-  padding:12px;
-  background:#007bff;
-  color:white;
-  border:none;
-  border-radius:6px;
-  cursor:pointer;
+/* ============================= */
+/* RESPONSIVE DESIGN             */
+/* ============================= */
+
+@media (max-width:900px){
+
+  .prebooking-card{
+    gap:25px;
+  }
+
 }
 
-.submit-btn:hover{
-  background:#0056b3;
-}
-
-/* MOBILE */
 
 @media (max-width:768px){
 
   .prebooking-card{
     flex-direction:column;
+  }
+
+  .product-details{
+    order:-1;
+  }
+
+  .product-preview{
+    max-width:220px;
+  }
+
+}
+
+
+@media (max-width:480px){
+
+  .booking-form h1{
+    font-size:22px;
+  }
+
+  .product-title{
+    font-size:20px;
+  }
+
+  .product-price{
+    font-size:18px;
+  }
+
+  .submit-btn{
+    font-size:14px;
   }
 
 }
