@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import Navbar from "./Navbar";
 import Footer from "./Footer";
-import products from "../data/products";   // ✅ import products data
+import products from "../data/products";
 import "./PreBooking.css";
 
 const PreBooking = () => {
@@ -21,7 +21,6 @@ const PreBooking = () => {
     address: ""
   });
 
-  // Backend API for saving booking
   const PREBOOKING_API = `${import.meta.env.VITE_API_URL}/api/prebooking`;
 
   useEffect(() => {
@@ -35,10 +34,12 @@ const PreBooking = () => {
   }, [id]);
 
   const handleChange = (e) => {
-    setFormData(prev => ({
+
+    setFormData((prev) => ({
       ...prev,
       [e.target.name]: e.target.value
     }));
+
   };
 
   const handleSubmit = async (e) => {
@@ -80,12 +81,16 @@ const PreBooking = () => {
         navigate(-1);
 
       } else {
+
         alert(`❌ ${data.message || "Failed to submit pre-booking"}`);
+
       }
 
     } catch (error) {
+
       console.error(error);
       alert("Something went wrong while saving your pre-booking.");
+
     }
 
     setLoading(false);
@@ -119,86 +124,108 @@ const PreBooking = () => {
 
         <div className="prebooking-card">
 
-          <h1>Pre-Booking for {product.title}</h1>
+          {/* LEFT SIDE PRODUCT DETAILS */}
+          <div className="product-details">
 
-          {/* Product Image */}
-          {/* <img
-            src={product.image}
-            alt={product.title}
-            className="product-preview"
-          /> */}
+            <img
+              src={product.image}
+              alt={product.title}
+              className="product-preview"
+            />
 
-          <p>Please fill the details below to reserve your product.</p>
+            <h2 className="product-title">
+              {product.title}
+            </h2>
 
-          <form
-            className="prebooking-form"
-            onSubmit={handleSubmit}
-          >
+            <p className="product-price">
+              ₹{product.price}
+            </p>
 
-            <label>
-              Full Name
-              <input
-                type="text"
-                name="name"
-                value={formData.name}
-                onChange={handleChange}
-                required
-              />
-            </label>
+            <p className="product-description">
+              {product.description}
+            </p>
 
-            <label>
-              Email
-              <input
-                type="email"
-                name="email"
-                value={formData.email}
-                onChange={handleChange}
-                required
-              />
-            </label>
+          </div>
 
-            <label>
-              Phone
-              <input
-                type="tel"
-                name="phone"
-                value={formData.phone}
-                onChange={handleChange}
-                required
-              />
-            </label>
 
-            <label>
-              Quantity
-              <input
-                type="number"
-                name="quantity"
-                min="1"
-                value={formData.quantity}
-                onChange={handleChange}
-                required
-              />
-            </label>
+          {/* RIGHT SIDE BOOKING FORM */}
+          <div className="booking-form">
 
-            <label>
-              Address
-              <textarea
-                name="address"
-                value={formData.address}
-                onChange={handleChange}
-                required
-              />
-            </label>
+            <h1>Pre-Booking</h1>
 
-            <button
-              type="submit"
-              className="submit-btn"
-              disabled={loading}
+            <p>Please fill the details below to reserve your product.</p>
+
+            <form
+              className="prebooking-form"
+              onSubmit={handleSubmit}
             >
-              {loading ? "Submitting..." : "Submit Pre-Booking"}
-            </button>
 
-          </form>
+              <label>
+                Full Name
+                <input
+                  type="text"
+                  name="name"
+                  value={formData.name}
+                  onChange={handleChange}
+                  required
+                />
+              </label>
+
+              <label>
+                Email
+                <input
+                  type="email"
+                  name="email"
+                  value={formData.email}
+                  onChange={handleChange}
+                  required
+                />
+              </label>
+
+              <label>
+                Phone
+                <input
+                  type="tel"
+                  name="phone"
+                  value={formData.phone}
+                  onChange={handleChange}
+                  required
+                />
+              </label>
+
+              <label>
+                Quantity
+                <input
+                  type="number"
+                  name="quantity"
+                  min="1"
+                  value={formData.quantity}
+                  onChange={handleChange}
+                  required
+                />
+              </label>
+
+              <label>
+                Address
+                <textarea
+                  name="address"
+                  value={formData.address}
+                  onChange={handleChange}
+                  required
+                />
+              </label>
+
+              <button
+                type="submit"
+                className="submit-btn"
+                disabled={loading}
+              >
+                {loading ? "Submitting..." : "Submit Pre-Booking"}
+              </button>
+
+            </form>
+
+          </div>
 
         </div>
 
