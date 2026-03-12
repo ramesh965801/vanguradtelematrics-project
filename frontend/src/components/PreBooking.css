@@ -201,7 +201,42 @@
 
 
 
-/* PRODUCT SIDE */
+.prebooking-wrapper{
+  max-width:1100px;
+  margin:auto;
+  padding:40px 20px;
+}
+
+.prebooking-card{
+  display:flex;
+  gap:40px;
+  background:white;
+  padding:30px;
+  border-radius:10px;
+  box-shadow:0 5px 15px rgba(0,0,0,0.1);
+}
+
+/* FORM */
+
+.booking-form{
+  flex:1;
+}
+
+.prebooking-form{
+  display:flex;
+  flex-direction:column;
+  gap:15px;
+}
+
+.prebooking-form input,
+.prebooking-form textarea{
+  width:100%;
+  padding:10px;
+  border:1px solid #ccc;
+  border-radius:6px;
+}
+
+/* PRODUCT */
 
 .product-details{
   flex:1;
@@ -221,8 +256,8 @@
 
 .product-price{
   font-size:22px;
-  color:green;
   font-weight:bold;
+  color:green;
 }
 
 .product-description{
@@ -230,25 +265,7 @@
   color:#555;
 }
 
-/* FORM SIDE */
-
-.booking-form{
-  flex:1;
-}
-
-.prebooking-form{
-  display:flex;
-  flex-direction:column;
-  gap:15px;
-}
-
-.prebooking-form input,
-.prebooking-form textarea{
-  width:100%;
-  padding:10px;
-  border:1px solid #ccc;
-  border-radius:5px;
-}
+/* BUTTON */
 
 .submit-btn{
   padding:12px;
@@ -261,4 +278,14 @@
 
 .submit-btn:hover{
   background:#0056b3;
+}
+
+/* MOBILE */
+
+@media (max-width:768px){
+
+  .prebooking-card{
+    flex-direction:column;
+  }
+
 }
