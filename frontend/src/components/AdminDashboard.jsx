@@ -1,17 +1,15 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import "./AdminDashboard.css";
 
-// Import products from products.js
-import productsData from "../products";
+// correct import
+import productsData from "../data/products";
 
 const AdminDashboard = () => {
 
-  // ---------------- LOGIN ----------------
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [loginData, setLoginData] = useState({ username: "", password: "" });
   const [loginError, setLoginError] = useState("");
 
-  // ---------------- DASHBOARD DATA ----------------
   const [totalProducts, setTotalProducts] = useState(0);
   const [totalPreBookings, setTotalPreBookings] = useState(0);
   const [totalRevenue, setTotalRevenue] = useState(0);
@@ -23,12 +21,12 @@ const AdminDashboard = () => {
 
   const API = `${import.meta.env.VITE_API_URL}/api/admin`;
 
-  // ---------------- LOGIN ----------------
+  // LOGIN INPUT
   const handleLoginChange = (e) =>
     setLoginData({ ...loginData, [e.target.name]: e.target.value });
 
+  // LOGIN
   const handleLogin = (e) => {
-
     e.preventDefault();
 
     if (loginData.username === "admin" && loginData.password === "Admin@123") {
@@ -43,30 +41,26 @@ const AdminDashboard = () => {
       setLoginError("Invalid credentials!");
 
     }
-
   };
 
-  // ---------------- LOAD DATA ----------------
+  // LOAD DATA
   const loadDashboardData = async () => {
 
     try {
 
-      // Load products from products.js
+      // products from products.js
       setProducts(productsData);
       setTotalProducts(productsData.length);
 
-      // Load PreBookings from backend
-      const resPre = await fetch(`${API}/prebookings`);
-      const preData = await resPre.json();
+      // pre bookings from backend
+      const res = await fetch(`${API}/prebookings`);
+      const data = await res.json();
 
-      const preArray = Array.isArray(preData)
-        ? preData
-        : preData.data || [];
+      const preArray = Array.isArray(data) ? data : data.data || [];
 
       setPreBookings(preArray);
       setTotalPreBookings(preArray.length);
 
-      // Calculate revenue
       const revenue = preArray.reduce((sum, item) => {
 
         const price = parseFloat(item.price) || 0;
@@ -83,13 +77,12 @@ const AdminDashboard = () => {
       console.error("Dashboard load error:", err);
 
     }
-
   };
 
-  // ---------------- DELETE PREBOOKING ----------------
+  // DELETE PREBOOKING
   const handleDelete = async (id) => {
 
-    if (!window.confirm("Are you sure?")) return;
+    if (!window.confirm("Delete this booking?")) return;
 
     try {
 
@@ -104,19 +97,16 @@ const AdminDashboard = () => {
       console.error("Delete error:", err);
 
     }
-
   };
 
   const showProducts = () => setActiveSection("products");
   const showPreBookings = () => setActiveSection("prebookings");
 
-  // ---------------- LOGIN PAGE ----------------
+  // LOGIN SCREEN
   if (!isLoggedIn) {
 
     return (
-
       <div className="login-popup">
-
         <form className="login-form" onSubmit={handleLogin}>
 
           <h2>Admin Login</h2>
@@ -144,13 +134,10 @@ const AdminDashboard = () => {
           <button type="submit">Login</button>
 
         </form>
-
       </div>
-
     );
   }
 
-  // ---------------- DASHBOARD ----------------
   return (
 
     <div className="admin-container">
@@ -165,7 +152,7 @@ const AdminDashboard = () => {
         </div>
 
         <div className="dashboard-card" onClick={showPreBookings}>
-          <h3>Total Pre-Bookings</h3>
+          <h3>Total PreBookings</h3>
           <h2>{totalPreBookings}</h2>
         </div>
 
@@ -176,7 +163,7 @@ const AdminDashboard = () => {
 
       </div>
 
-      {/* ---------------- PRODUCTS ---------------- */}
+      {/* PRODUCTS */}
 
       {activeSection === "products" && (
 
@@ -230,13 +217,13 @@ const AdminDashboard = () => {
 
       )}
 
-      {/* ---------------- PREBOOKINGS ---------------- */}
+      {/* PRE BOOKINGS */}
 
       {activeSection === "prebookings" && (
 
         <div className="details-section">
 
-          <h2>Pre-Booking Details</h2>
+          <h2>PreBooking Details</h2>
 
           <table>
 
@@ -262,12 +249,7 @@ const AdminDashboard = () => {
 
                   <td>{item.id}</td>
 
-                  <td>
-                    {item.title ||
-                     item.product_name ||
-                     item.product_title ||
-                     "Vehicle Accident Tracker"}
-                  </td>
+                  <td>{item.product_title || "Vehicle Accident Tracker"}</td>
 
                   <td>{item.name}</td>
 
@@ -304,9 +286,7 @@ const AdminDashboard = () => {
       )}
 
     </div>
-
   );
-
 };
 
 export default AdminDashboard;
