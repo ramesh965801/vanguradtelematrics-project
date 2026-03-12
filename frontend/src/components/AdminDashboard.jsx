@@ -47,11 +47,11 @@ const AdminDashboard = () => {
 
     try {
 
-      // products from products.js
+      // Products from products.js
       setProducts(productsData);
       setTotalProducts(productsData.length);
 
-      // get bookings
+      // Get bookings
       const res = await fetch(`${API}/prebookings`);
       const data = await res.json();
 
@@ -60,16 +60,19 @@ const AdminDashboard = () => {
       setPreBookings(preArray);
       setTotalPreBookings(preArray.length);
 
-      // DYNAMIC REVENUE CALCULATION
+      // Revenue calculation
       const revenue = preArray.reduce((sum, booking) => {
 
         const product = productsData.find(
           (p) =>
-            p.title === booking.product_title ||
-            p.title === booking.title
+            p.title.toLowerCase() ===
+            (booking.title || "").toLowerCase()
         );
 
-        const price = product ? product.price : 0;
+        const price = product
+          ? product.price
+          : parseFloat(booking.price) || 0;
+
         const quantity = parseInt(booking.quantity) || 1;
 
         return sum + price * quantity;
@@ -108,7 +111,7 @@ const AdminDashboard = () => {
   const showProducts = () => setActiveSection("products");
   const showPreBookings = () => setActiveSection("prebookings");
 
-  // LOGIN SCREEN
+  // LOGIN PAGE
   if (!isLoggedIn) {
 
     return (
@@ -225,7 +228,7 @@ const AdminDashboard = () => {
 
       )}
 
-      {/* PREBOOKINGS */}
+      {/* PRE BOOKINGS */}
 
       {activeSection === "prebookings" && (
 
@@ -257,7 +260,7 @@ const AdminDashboard = () => {
 
                   <td>{item.id}</td>
 
-                   <td>{item.title}</td>
+                  <td>{item.title}</td>
 
                   <td>{item.name}</td>
 
