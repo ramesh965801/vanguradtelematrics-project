@@ -2,14 +2,15 @@ const express = require("express");
 const router = express.Router();
 const db = require("../config/db");
 
+// POST prebooking
 router.post("/", (req, res) => {
 
   const { product_id, name, email, phone, quantity, address } = req.body;
 
   const sql = `
-    INSERT INTO prebookings
-    (product_id,name,email,phone,quantity,address)
-    VALUES (?,?,?,?,?,?)
+    INSERT INTO prebookings 
+    (product_id, name, email, phone, quantity, address)
+    VALUES (?, ?, ?, ?, ?, ?)
   `;
 
   db.query(
@@ -19,7 +20,10 @@ router.post("/", (req, res) => {
 
       if (err) {
         console.error(err);
-        return res.status(500).json({ success: false });
+        return res.status(500).json({
+          success: false,
+          message: "Database error"
+        });
       }
 
       res.json({
@@ -29,7 +33,6 @@ router.post("/", (req, res) => {
 
     }
   );
-
 });
 
 module.exports = router;
