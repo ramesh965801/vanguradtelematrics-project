@@ -12,8 +12,8 @@ const Banner = () => {
       <div className="glow"></div>
 
       <div className="glass-card">
-        <h1>Expand Your Knowledge</h1>
-        <p>Dive Into the World of Educational Insights</p>
+        <h1>Precision Meets Possibilities</h1>
+        <p>Welcome to vanguard Telematics</p>
 
         <div className="banner-buttons">
           <Link to="/services" className="btn primary">
