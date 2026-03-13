@@ -6,27 +6,26 @@ const path = require("path");
 
 const app = express();
 
-//razorpay integrated
-
+// Razorpay integrated
 const paymentRoutes = require("./routes/paymentRoutes");
-
 
 // Middleware
 app.use(cors());
 app.use(express.json());
 
+// Routes
 app.use("/api/payment", paymentRoutes);
 
 // Static folder for product images
 app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 
-// Import Routes
+// Import other routes
 const productRoutes = require("./routes/products");
 const adminRoutes = require("./routes/admin");
-const bookingRoutes = require("./routes/bookingRoutes");
-app.use("/api/prebooking", prebookingRoutes);
+const bookingRoutes = require("./routes/bookingRoutes"); // This is your bookings table
 
 // Use Routes
+app.use("/api/bookings", bookingRoutes);  // Use bookingRoutes instead of prebookingRoutes
 app.use("/api/products", productRoutes);
 app.use("/api/admin", adminRoutes);
 
@@ -37,7 +36,6 @@ app.get("/", (req, res) => {
 
 // Start Server
 const PORT = process.env.PORT || 5000;
-
 app.listen(PORT, () => {
   console.log(`🚀 Server running on port ${PORT}`);
 });
