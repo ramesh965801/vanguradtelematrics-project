@@ -1,0 +1,124 @@
+/* Page Background */
+
+.success-page{
+  min-height:100vh;
+  display:flex;
+  flex-direction:column;
+  background:linear-gradient(120deg,#667eea,#764ba2,#43cea2);
+  font-family:Arial, Helvetica, sans-serif;
+}
+
+
+/* Success Card (Smaller Size) */
+
+.success-card{
+
+  width:85%;
+  max-width:380px;
+
+  margin:70px auto;
+
+  background:#ffffff;
+
+  padding:25px;
+
+  border-radius:14px;
+
+  text-align:center;
+
+  box-shadow:0 8px 25px rgba(0,0,0,0.2);
+
+  animation:fadeIn 0.7s ease;
+
+}
+
+
+/* Success Icon */
+
+.success-icon{
+  font-size:50px;
+  color:#2ecc71;
+  margin-bottom:10px;
+}
+
+
+/* Heading */
+
+.success-card h1{
+  font-size:22px;
+  color:#27ae60;
+  margin-bottom:8px;
+}
+
+
+/* Message */
+
+.success-card p{
+  font-size:14px;
+  color:#555;
+}
+
+
+/* Details Box */
+
+.success-details{
+
+  margin-top:18px;
+
+  padding:15px;
+
+  background:#f4f6f9;
+
+  border-radius:8px;
+
+  text-align:left;
+
+}
+
+
+/* Details Text */
+
+.success-details p{
+  margin:8px 0;
+  font-size:14px;
+  color:#333;
+}
+
+
+/* Redirect Message */
+
+.redirect-msg{
+  margin-top:18px;
+  font-size:13px;
+  color:#777;
+}
+
+
+/* Animation */
+
+@keyframes fadeIn{
+  from{
+    opacity:0;
+    transform:translateY(25px);
+  }
+  to{
+    opacity:1;
+    transform:translateY(0);
+  }
+}
+
+
+/* Mobile Responsive */
+
+@media (max-width:600px){
+
+  .success-card{
+    width:90%;
+    padding:20px;
+  }
+
+  .success-card h1{
+    font-size:20px;
+  }
+
+}
