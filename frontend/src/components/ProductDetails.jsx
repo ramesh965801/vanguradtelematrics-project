@@ -92,7 +92,7 @@ const ProductDetails = () => {
             </div>
 
             <p className="exclusive-offer">
-              🔥 Exclusive offer for first 15 customers
+              Pre Reserve Now At Just ₹ 699
             </p>
 
             <button
