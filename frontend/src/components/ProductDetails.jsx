@@ -110,7 +110,7 @@ const ProductDetails = () => {
               className="action-btn"
               onClick={() => navigate(`/prebooking/${product.id}`)}
             >
-              Pre Booking Now
+              Pre Book Now
             </button>
 
           </div>
