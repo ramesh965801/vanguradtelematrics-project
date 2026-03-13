@@ -204,7 +204,7 @@
 @media (max-width: 480px) {
 
   .banner {
-    min-height: 50vh;
+    min-height: 100vh;
   }
 
   .glass-card h1 {
