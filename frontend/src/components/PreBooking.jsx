@@ -10,6 +10,8 @@ const PreBooking = () => {
   const { id } = useParams();
   const navigate = useNavigate();
 
+  const API_URL = import.meta.env.VITE_API_URL;
+
   const [product, setProduct] = useState(null);
   const [loading, setLoading] = useState(false);
 
@@ -21,7 +23,7 @@ const PreBooking = () => {
     address: ""
   });
 
-  const PREBOOKING_API = `${import.meta.env.VITE_API_URL}/api/prebooking`;
+  const PREBOOKING_API = `${API_URL}/api/prebooking`;
 
   useEffect(() => {
 
@@ -57,7 +59,7 @@ const PreBooking = () => {
       /* STEP 1 : Create Razorpay Order */
 
       const orderRes = await fetch(
-        "http://localhost:5000/api/payment/create-order",
+        `${API_URL}/api/payment/create-order`,
         {
           method: "POST",
           headers: {
@@ -98,7 +100,7 @@ const PreBooking = () => {
             /* STEP 3 : Verify Payment */
 
             const verifyRes = await fetch(
-              "http://localhost:5000/api/payment/verify-payment",
+              `${API_URL}/api/payment/verify-payment`,
               {
                 method: "POST",
                 headers: {
@@ -118,29 +120,29 @@ const PreBooking = () => {
 
               /* STEP 4 : Save Booking */
 
-             await fetch(PREBOOKING_API,{
-method:"POST",
-headers:{
-"Content-Type":"application/json"
-},
-body:JSON.stringify({
+              await fetch(PREBOOKING_API, {
+                method: "POST",
+                headers: {
+                  "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
 
-product_id:product.id,
-product_name:product.title,
+                  product_id: product.id,
+                  product_name: product.title,
 
-name:formData.name,
-email:formData.email,
-phone:formData.phone,
-address:formData.address,
+                  name: formData.name,
+                  email: formData.email,
+                  phone: formData.phone,
+                  address: formData.address,
 
-quantity:formData.quantity,
+                  quantity: formData.quantity,
+                  amount: amount,
 
-amount:amount,
+                  payment_id: response.razorpay_payment_id
 
-payment_id:response.razorpay_payment_id
+                })
+              });
 
-})
-});
               /* STEP 5 : Redirect to Success Page */
 
               navigate("/payment-success", {
