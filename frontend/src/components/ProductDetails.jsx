@@ -91,9 +91,12 @@ const ProductDetails = () => {
 
             </div>
 
-            <p className="exclusive-offer">
-              Pre Reserve Now At Just ₹ 699
-            </p>
+          <p className="exclusive-offer">
+  Pre Reserve Now At Just 
+  <span style={{ color: "#ff0000", fontWeight: "bold", fontSize: "20px" }}>
+    ₹699
+  </span>
+</p>
 
             <button
               className="action-btn"
