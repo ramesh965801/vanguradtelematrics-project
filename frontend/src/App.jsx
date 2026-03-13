@@ -14,7 +14,7 @@ import PaymentSuccess from "./components/PaymentSuccess";
 
 function App() {
   return (
-   
+    <Router>
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/products" element={<Products />} />
@@ -23,12 +23,14 @@ function App() {
         <Route path="/testimonial" element={<Testimonialpage />} />
         <Route path="/contact" element={<Contact />} />
         <Route path="/aboutus" element={<Aboutus />} />
-       <Route path="/prebooking/:id" element={<PreBooking />} />
+        <Route path="/prebooking/:id" element={<PreBooking />} />
         <Route path="/payment-success" element={<PaymentSuccess />} />
-        <Route path="/admin123AvhfGrsFouTRseoPWytrsgfrhiokb" element={<AdminDashboard />} />
-
+        <Route
+          path="/admin123AvhfGrsFouTRseoPWytrsgfrhiokb"
+          element={<AdminDashboard />}
+        />
       </Routes>
-   
+    </Router>
   );
 }
 
