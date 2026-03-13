@@ -13,7 +13,7 @@
 .banner {
   position: relative;
   width: 100%;
-  min-height: 100vh;
+  min-height: 100vh; /* Desktop height */
   display: flex;
   align-items: center;
   justify-content: center;
@@ -96,7 +96,6 @@
 /* Card Hover Effect */
 .glass-card:hover {
   transform: translateY(-8px);
- 
 }
 
 /* Fade In Animation */
@@ -171,13 +170,23 @@
 /* ============================= */
 /* RESPONSIVE DESIGN */
 /* ============================= */
+
+/* Tablet */
 @media (max-width: 992px) {
   .glass-card h1 {
     font-size: 40px;
   }
 }
 
+/* Mobile */
 @media (max-width: 768px) {
+
+  /* ⭐ Banner height reduced on mobile */
+  .banner {
+    min-height: 50vh;
+    padding: 40px 20px;
+  }
+
   .glass-card {
     padding: 40px 25px;
   }
@@ -191,7 +200,13 @@
   }
 }
 
+/* Small Mobile */
 @media (max-width: 480px) {
+
+  .banner {
+    min-height: 50vh;
+  }
+
   .glass-card h1 {
     font-size: 26px;
   }
