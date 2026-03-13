@@ -57,7 +57,7 @@ const AdminDashboard = () => {
       setTotalProducts(productsData.length);
 
       // BOOKINGS
-      const resBookings = await fetch(`${BASE_URL}/api/prebooking`);
+const resBookings = await fetch(`${BASE_URL}/api/bookings`);
       const bookingData = await resBookings.json();
       setBookings(bookingData);
       setTotalBookings(bookingData.length);
