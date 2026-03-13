@@ -6,7 +6,6 @@ import products from "../data/products";
 import "./PreBooking.css";
 
 const PreBooking = () => {
-
   const { id } = useParams();
   const navigate = useNavigate();
 
@@ -23,128 +22,87 @@ const PreBooking = () => {
     address: ""
   });
 
-  const PREBOOKING_API = `${API_URL}/api/prebooking`;
+  // POST booking to bookings table
+  const BOOKING_API = `${API_URL}/api/bookings`;
 
   useEffect(() => {
-
-    const foundProduct = products.find(
-      (item) => item.id === Number(id)
-    );
-
+    const foundProduct = products.find((item) => item.id === Number(id));
     setProduct(foundProduct);
-
   }, [id]);
 
   const handleChange = (e) => {
-
-    setFormData(prev => ({
+    setFormData((prev) => ({
       ...prev,
       [e.target.name]: e.target.value
     }));
-
   };
 
   const handleSubmit = async (e) => {
-
     e.preventDefault();
-
     if (!product) return;
 
     setLoading(true);
 
     try {
-
       const amount = product.price * formData.quantity;
 
       /* STEP 1 : Create Razorpay Order */
-
-      const orderRes = await fetch(
-        `${API_URL}/api/payment/create-order`,
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json"
-          },
-          body: JSON.stringify({ amount })
-        }
-      );
-
+      const orderRes = await fetch(`${API_URL}/api/payment/create-order`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ amount })
+      });
       const order = await orderRes.json();
 
       /* STEP 2 : Razorpay Payment */
-
       const options = {
-
         key: import.meta.env.VITE_RAZORPAY_KEY,
         amount: order.amount,
         currency: "INR",
         order_id: order.id,
-
         name: "My Store",
         description: product.title,
-
         prefill: {
           name: formData.name,
           email: formData.email,
           contact: formData.phone
         },
-
-        theme: {
-          color: "#27ae60"
-        },
+        theme: { color: "#27ae60" },
 
         handler: async function (response) {
-
           try {
-
             /* STEP 3 : Verify Payment */
-
-            const verifyRes = await fetch(
-              `${API_URL}/api/payment/verify-payment`,
-              {
-                method: "POST",
-                headers: {
-                  "Content-Type": "application/json"
-                },
-                body: JSON.stringify({
-                  razorpay_order_id: response.razorpay_order_id,
-                  razorpay_payment_id: response.razorpay_payment_id,
-                  razorpay_signature: response.razorpay_signature
-                })
-              }
-            );
+            const verifyRes = await fetch(`${API_URL}/api/payment/verify-payment`, {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({
+                razorpay_order_id: response.razorpay_order_id,
+                razorpay_payment_id: response.razorpay_payment_id,
+                razorpay_signature: response.razorpay_signature
+              })
+            });
 
             const verifyData = await verifyRes.json();
 
             if (verifyData.success) {
-
-              /* STEP 4 : Save Booking */
-
-              await fetch(PREBOOKING_API, {
+              /* STEP 4 : Save Booking in bookings table */
+              await fetch(BOOKING_API, {
                 method: "POST",
-                headers: {
-                  "Content-Type": "application/json"
-                },
+                headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({
-
                   product_id: product.id,
                   product_name: product.title,
-
                   name: formData.name,
                   email: formData.email,
                   phone: formData.phone,
                   address: formData.address,
-
                   quantity: formData.quantity,
                   amount: amount,
-
                   payment_id: response.razorpay_payment_id
-
                 })
               });
 
               /* STEP 5 : Redirect to Success Page */
-
               navigate("/payment-success", {
                 state: {
                   transactionId: response.razorpay_payment_id,
@@ -152,39 +110,27 @@ const PreBooking = () => {
                   amount: amount
                 }
               });
-
             } else {
-
               alert("❌ Payment verification failed");
-
             }
-
           } catch (error) {
-
             console.error(error);
             alert("Payment verification error");
-
           }
-
         }
-
       };
 
       const rzp = new window.Razorpay(options);
       rzp.open();
-
     } catch (error) {
-
       console.error(error);
       alert("Payment failed. Please try again.");
-
     }
 
     setLoading(false);
   };
 
   if (!product) {
-
     return (
       <div className="prebooking-page">
         <Navbar />
@@ -194,35 +140,21 @@ const PreBooking = () => {
         <Footer />
       </div>
     );
-
   }
 
   return (
-
     <div className="prebooking-page">
-
       <Navbar />
-
       <div className="prebooking-wrapper">
-
-        <button
-          className="back-btn"
-          onClick={() => navigate(-1)}
-        >
+        <button className="back-btn" onClick={() => navigate(-1)}>
           ← Back
         </button>
 
         <div className="prebooking-card">
-
           <h1>Pre-Booking for {product.title}</h1>
-
           <p>Please fill the details below to reserve your product.</p>
 
-          <form
-            className="prebooking-form"
-            onSubmit={handleSubmit}
-          >
-
+          <form className="prebooking-form" onSubmit={handleSubmit}>
             <label>
               Full Name
               <input
@@ -278,26 +210,15 @@ const PreBooking = () => {
               />
             </label>
 
-            <button
-              type="submit"
-              className="submit-btn"
-              disabled={loading}
-            >
+            <button type="submit" className="submit-btn" disabled={loading}>
               {loading ? "Processing..." : "Pay & Pre-Book"}
             </button>
-
           </form>
-
         </div>
-
       </div>
-
       <Footer />
-
     </div>
-
   );
-
 };
 
 export default PreBooking;
