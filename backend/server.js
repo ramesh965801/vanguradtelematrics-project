@@ -21,15 +21,12 @@ app.use("/api/payment", paymentRoutes);
 app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 
 // Import Routes
-const prebookingRoutes = require("./routes/prebooking");
 const productRoutes = require("./routes/products");
 const adminRoutes = require("./routes/admin");
 const bookingRoutes = require("./routes/bookingRoutes");
-
-app.use("/api", bookingRoutes);
+app.use("/api/prebooking", prebookingRoutes);
 
 // Use Routes
-app.use("/api/prebooking", prebookingRoutes);
 app.use("/api/products", productRoutes);
 app.use("/api/admin", adminRoutes);
 
