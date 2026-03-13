@@ -82,7 +82,7 @@ const ProductDetails = () => {
               </span>
 
               <span className="new-price">
-                ₹{product.price}
+                ₹ 15999
               </span>
 
               <span className="discount">
