@@ -52,7 +52,7 @@ const Products = () => {
 
               <p>{product.description}</p>
 
-              <h4>₹{product.price}</h4>
+              {/* <h4>₹{product.price}</h4> */}
 
               <div className="buy-wrapper">
 
