@@ -91,10 +91,18 @@ const ProductDetails = () => {
 
             </div>
 
-          <p className="exclusive-offer">
-  Pre Reserve Now At Just 
-  <span style={{ color: "rgb(129 0 0)", fontWeight: "bold", fontSize: "20px",marginLeft:"5px" }}>
-      ₹ 699
+        <p className="exclusive-offer">
+  Pre Reserve Now At Just
+  <span
+    style={{
+      color: "rgb(129, 0, 0)",
+      fontWeight: "bold",
+      fontSize: "20px",
+      marginLeft: "8px",
+      display: "inline-block"
+    }}
+  >
+    ₹699
   </span>
 </p>
 
