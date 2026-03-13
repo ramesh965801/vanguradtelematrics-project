@@ -22,10 +22,10 @@ app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 // Import other routes
 const productRoutes = require("./routes/products");
 const adminRoutes = require("./routes/admin");
-const bookingRoutes = require("./routes/bookingRoutes"); // This is your bookings table
+const bookingRoutes = require("./routes/bookingRoutes");
+app.use("/api/bookings", bookingRoutes); // Use this
 
 // Use Routes
-app.use("/api/bookings", bookingRoutes);  // Use bookingRoutes instead of prebookingRoutes
 app.use("/api/products", productRoutes);
 app.use("/api/admin", adminRoutes);
 
