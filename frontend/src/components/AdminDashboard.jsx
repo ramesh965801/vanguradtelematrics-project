@@ -8,7 +8,7 @@ const [isLoggedIn, setIsLoggedIn] = useState(false);
 const [loginData, setLoginData] = useState({ username: "", password: "" });
 const [loginError, setLoginError] = useState("");
 
-// DASHBOARD DATA
+// DASHBOARD DAT
 const [totalProducts, setTotalProducts] = useState(0);
 const [totalBookings, setTotalBookings] = useState(0);
 const [totalRevenue, setTotalRevenue] = useState(0);
