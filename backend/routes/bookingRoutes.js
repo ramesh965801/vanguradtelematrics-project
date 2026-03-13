@@ -2,22 +2,52 @@ const express = require("express");
 const router = express.Router();
 const db = require("../config/db");
 
-router.get("/bookings", async (req, res) => {
+router.post("/", (req, res) => {
 
-  try {
+const {
 
-    const [rows] = await db.promise().query(
-      "SELECT * FROM bookings ORDER BY created_at DESC"
-    );
+product_id,
+product_name,
+name,
+email,
+phone,
+address,
+quantity,
+amount,
+payment_id
 
-    res.json(rows);
+} = req.body;
 
-  } catch (err) {
+const sql = `
+INSERT INTO bookings
+(product_id,product_name,name,email,phone,address,quantity,amount,payment_id)
+VALUES (?,?,?,?,?,?,?,?,?)
+`;
 
-    console.error(err);
-    res.status(500).json({ error: "Server Error" });
+db.query(sql, [
 
-  }
+product_id,
+product_name,
+name,
+email,
+phone,
+address,
+quantity,
+amount,
+payment_id
+
+], (err,result)=>{
+
+if(err){
+
+console.log(err);
+return res.status(500).json({error:"Database error"});
+
+}
+
+res.json({success:true});
+
+});
 
 });
 
