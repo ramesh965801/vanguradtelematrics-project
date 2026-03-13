@@ -1,7 +1,7 @@
 import React from "react";
 import "./About.css"; // Import CSS
-import aboutImage from "../assets/images/product1.jpg"; // Your image file
-import aboutImage2 from "../assets/images/product2.jpg"; // Your image file
+import aboutImage from "../assets/images/aboutus-1.jpeg"; // Your image file
+import aboutImage2 from "../assets/images/aboutus-2.jpeg"; // Your image file
 const About = () => {
   return (
     <section className="about-section">
