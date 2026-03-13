@@ -1,298 +1,516 @@
 import React, { useState } from "react";
 import "./AdminDashboard.css";
-import productsData from "../data/products";
 
 const AdminDashboard = () => {
 
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [loginData, setLoginData] = useState({ username: "", password: "" });
-  const [loginError, setLoginError] = useState("");
+// LOGIN
+const [isLoggedIn, setIsLoggedIn] = useState(false);
+const [loginData, setLoginData] = useState({ username: "", password: "" });
+const [loginError, setLoginError] = useState("");
 
-  const [totalProducts, setTotalProducts] = useState(0);
-  const [totalPreBookings, setTotalPreBookings] = useState(0);
-  const [totalRevenue, setTotalRevenue] = useState(0);
+// DASHBOARD DATA
+const [totalProducts, setTotalProducts] = useState(0);
+const [totalBookings, setTotalBookings] = useState(0);
+const [totalRevenue, setTotalRevenue] = useState(0);
 
-  const [products, setProducts] = useState([]);
-  const [preBookings, setPreBookings] = useState([]);
+const [products, setProducts] = useState([]);
+const [bookings, setBookings] = useState([]);
 
-  const [activeSection, setActiveSection] = useState("");
+const [activeSection, setActiveSection] = useState("");
 
-  const API = `${import.meta.env.VITE_API_URL}/api/admin`;
+const [success, setSuccess] = useState(false);
 
-  // LOGIN INPUT
-  const handleLoginChange = (e) =>
-    setLoginData({ ...loginData, [e.target.name]: e.target.value });
+// ADD PRODUCT
+const [newProduct, setNewProduct] = useState({
+title: "",
+price: "",
+description: "",
+image: null
+});
 
-  // LOGIN
-  const handleLogin = (e) => {
+const [preview, setPreview] = useState(null);
 
-    e.preventDefault();
+const API = `${import.meta.env.VITE_API_URL}/api/admin`;
+const BASE_URL = import.meta.env.VITE_API_URL;
 
-    if (loginData.username === "admin" && loginData.password === "Admin@123") {
+// LOGIN INPUT
+const handleLoginChange = (e) => {
+setLoginData({
+...loginData,
+[e.target.name]: e.target.value
+});
+};
 
-      setIsLoggedIn(true);
-      setLoginError("");
+// LOGIN
+const handleLogin = (e) => {
+e.preventDefault();
 
-      loadDashboardData();
+if (
+  loginData.username === "admin" &&
+  loginData.password === "Admin@123"
+) {
 
-    } else {
+  setIsLoggedIn(true);
+  setLoginError("");
+  loadDashboardData();
 
-      setLoginError("Invalid credentials!");
+} else {
 
-    }
-  };
+  setLoginError("Invalid credentials!");
 
-  // LOAD DASHBOARD DATA
-  const loadDashboardData = async () => {
+}
 
-    try {
+};
 
-      setProducts(productsData);
-      setTotalProducts(productsData.length);
+// LOAD DASHBOARD DATA
+const loadDashboardData = async () => {
 
-      const res = await fetch(`${API}/prebookings`);
-      const data = await res.json();
+  try {const loadDashboardData = async () => {
 
-      const preArray = Array.isArray(data) ? data : data.data || [];
+  try {
 
-      setPreBookings(preArray);
-      setTotalPreBookings(preArray.length);
+    // PRODUCTS
+    const resProducts = await fetch(`${API}/products`);
+    const productsData = await resProducts.json();
 
-      // CALCULATE REVENUE
-      let revenue = 0;
+    setProducts(productsData);
+    setTotalProducts(productsData.length);
 
-      preArray.forEach((booking) => {
+    // BOOKINGS
+    const resBookings = await fetch(`${BASE_URL}/api/bookings`);
+    const bookingData = await resBookings.json();
 
-        const product = productsData.find(
-          (p) => p.id === booking.product_id
-        );
+    setBookings(bookingData);
+    setTotalBookings(bookingData.length);
 
-        const price = product ? Number(product.price) : 0;
-        const quantity = Number(booking.quantity || 1);
+    // REVENUE
+    let revenue = 0;
 
-        revenue += price * quantity;
+    bookingData.forEach((item) => {
+      if (item.amount) {
+        revenue += Number(item.amount);
+      }
+    });
 
-      });
+    setTotalRevenue(revenue);
 
-      setTotalRevenue(revenue);
+  } catch (err) {
 
-    } catch (err) {
+    console.error("Dashboard error:", err);
 
-      console.error("Dashboard load error:", err);
-
-    }
-  };
-
-  // DELETE BOOKING
-  const handleDelete = async (id) => {
-
-    if (!window.confirm("Delete this booking?")) return;
-
-    try {
-
-      await fetch(`${API}/delete-prebooking/${id}`, {
-        method: "DELETE"
-      });
-
-      loadDashboardData();
-
-    } catch (err) {
-
-      console.error("Delete error:", err);
-
-    }
-  };
-
-  const showProducts = () => setActiveSection("products");
-  const showPreBookings = () => setActiveSection("prebookings");
-
-  // LOGIN PAGE
-  if (!isLoggedIn) {
-
-    return (
-      <div className="login-popup">
-
-        <form className="login-form" onSubmit={handleLogin}>
-
-          <h2>Admin Login</h2>
-
-          {loginError && <p className="error">{loginError}</p>}
-
-          <input
-            type="text"
-            name="username"
-            placeholder="Username"
-            value={loginData.username}
-            onChange={handleLoginChange}
-            required
-          />
-
-          <input
-            type="password"
-            name="password"
-            placeholder="Password"
-            value={loginData.password}
-            onChange={handleLoginChange}
-            required
-          />
-
-          <button type="submit">Login</button>
-
-        </form>
-
-      </div>
-    );
   }
 
-  return (
+};
 
-    <div className="admin-container">
+    // PRODUCTS
+    const resProducts = await fetch(`${API}/products`);
+    const productsData = await resProducts.json();
 
-      <h1 className="admin-title">Admin Dashboard</h1>
+    setProducts(productsData);
+    setTotalProducts(productsData.length);
 
-      <div className="dashboard-cards">
+    // BOOKINGS
+    const resBookings = await fetch(`${BASE_URL}/api/bookings`);
+    const bookingData = await resBookings.json();
 
-        <div className="dashboard-card" onClick={showProducts}>
-          <h3>Total Products</h3>
-          <h2>{totalProducts}</h2>
-        </div>
+    setBookings(bookingData);
+    setTotalBookings(bookingData.length);
 
-        <div className="dashboard-card" onClick={showPreBookings}>
-          <h3>Total PreBookings</h3>
-          <h2>{totalPreBookings}</h2>
-        </div>
+    // REVENUE
+    let revenue = 0;
 
-        <div className="dashboard-card">
-          <h3>Total Revenue</h3>
-          <h2>₹ {totalRevenue}</h2>
-        </div>
+    bookingData.forEach((item) => {
+      if (item.amount) {
+        revenue += Number(item.amount);
+      }
+    });
 
-      </div>
+    setTotalRevenue(revenue);
 
-      {/* PRODUCTS */}
+  } catch (err) {
 
-      {activeSection === "products" && (
+    console.error("Dashboard error:", err);
 
-        <div className="details-section">
+  }
 
-          <h2>Product Details</h2>
+};
 
-          <table>
+// PRODUCT FORM
+const handleChange = (e) => {
 
-            <thead>
-              <tr>
-                <th>ID</th>
-                <th>Image</th>
-                <th>Title</th>
-                <th>Price</th>
-                <th>Description</th>
-              </tr>
-            </thead>
+if (e.target.name === "image") {
 
-            <tbody>
+  const file = e.target.files[0];
 
-              {products.map((item) => (
+  setNewProduct({
+    ...newProduct,
+    image: file
+  });
 
-                <tr key={item.id}>
+  if (file) {
+    setPreview(URL.createObjectURL(file));
+  }
 
-                  <td>{item.id}</td>
+} else {
 
-                  <td>
-                    <img
-                      src={item.image}
-                      alt={item.title}
-                      width="80"
-                    />
-                  </td>
+  setNewProduct({
+    ...newProduct,
+    [e.target.name]: e.target.value
+  });
 
-                  <td>{item.title}</td>
+}
 
-                  <td>₹ {item.price}</td>
 
-                  <td>{item.description}</td>
+};
 
-                </tr>
+// ADD PRODUCT
+const handleAddProduct = async (e) => {
 
-              ))}
 
-            </tbody>
+e.preventDefault();
 
-          </table>
+try {
 
-        </div>
+  const formData = new FormData();
 
-      )}
+  formData.append("title", newProduct.title);
+  formData.append("price", newProduct.price);
+  formData.append("description", newProduct.description);
+  formData.append("image", newProduct.image);
 
-      {/* PREBOOKINGS */}
+  const res = await fetch(`${API}/add-product`, {
+    method: "POST",
+    body: formData
+  });
 
-      {activeSection === "prebookings" && (
+  if (res.ok) {
 
-        <div className="details-section">
+    setSuccess(true);
 
-          <h2>PreBooking Details</h2>
+    setNewProduct({
+      title: "",
+      price: "",
+      description: "",
+      image: null
+    });
 
-          <table>
+    setPreview(null);
 
-            <thead>
-              <tr>
-                <th>ID</th>
-                <th>Product</th>
-                <th>Name</th>
-                <th>Email</th>
-                <th>Phone</th>
-                <th>Quantity</th>
-                <th>Address</th>
-                <th>Date</th>
-                <th>Action</th>
-              </tr>
-            </thead>
+    loadDashboardData();
 
-            <tbody>
+    setTimeout(() => setSuccess(false), 1500);
 
-              {preBookings.map((item) => (
+  }
 
-                <tr key={item.id}>
+} catch (err) {
 
-                  <td>{item.id}</td>
+  console.error("Add product error:", err);
 
-                 <td>{item.product_name}</td>
+}
 
-                  <td>{item.name}</td>
 
-                  <td>{item.email}</td>
+};
 
-                  <td>{item.phone}</td>
+// DELETE
+const handleDelete = async (id, type) => {
 
-                  <td>{item.quantity}</td>
 
-                  <td>{item.address}</td>
+if (!window.confirm("Are you sure?")) return;
 
-                  <td>
-                    {item.created_at
-                      ? new Date(item.created_at).toLocaleString()
-                      : "-"}
-                  </td>
+try {
 
-                  <td>
-                    <button onClick={() => handleDelete(item.id)}>
-                      Delete
-                    </button>
-                  </td>
+  await fetch(`${API}/delete-${type}/${id}`, {
+    method: "DELETE"
+  });
 
-                </tr>
+  loadDashboardData();
 
-              ))}
+} catch (err) {
 
-            </tbody>
+  console.error("Delete error:", err);
 
-          </table>
+}
 
-        </div>
 
-      )}
+};
+
+const showProducts = () => setActiveSection("products");
+const showBookings = () => setActiveSection("bookings");
+const showAddProduct = () => setActiveSection("addProduct");
+
+// LOGIN PAGE
+if (!isLoggedIn) {
+
+
+return (
+
+  <div className="login-popup">
+
+    <form className="login-form" onSubmit={handleLogin}>
+
+      <h2>Admin Login</h2>
+
+      {loginError && <p className="error">{loginError}</p>}
+
+      <input
+        type="text"
+        name="username"
+        placeholder="Username"
+        value={loginData.username}
+        onChange={handleLoginChange}
+        required
+      />
+
+      <input
+        type="password"
+        name="password"
+        placeholder="Password"
+        value={loginData.password}
+        onChange={handleLoginChange}
+        required
+      />
+
+      <button type="submit">Login</button>
+
+    </form>
+
+  </div>
+
+);
+
+
+}
+
+return (
+
+
+<div className="admin-container">
+
+  <h1 className="admin-title">Admin Dashboard</h1>
+
+  {/* DASHBOARD CARDS */}
+
+  <div className="dashboard-cards">
+
+    <div className="dashboard-card" onClick={showProducts}>
+      <h3>Total Products</h3>
+      <h2>{totalProducts}</h2>
+    </div>
+
+    <div className="dashboard-card">
+      <h3>Total Revenue</h3>
+      <h2>₹ {totalRevenue}</h2>
+    </div>
+
+    <div className="dashboard-card" onClick={showBookings}>
+      <h3>Total Bookings</h3>
+      <h2>{totalBookings}</h2>
+    </div>
+
+    <div className="dashboard-card" onClick={showAddProduct}>
+      <h3>Add Product</h3>
+      <h2>+</h2>
+    </div>
+
+  </div>
+
+  {/* PRODUCTS */}
+
+  {activeSection === "products" && (
+
+    <div className="details-section">
+
+      <h2>Products</h2>
+
+      <table>
+
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Image</th>
+            <th>Title</th>
+            <th>Price</th>
+            <th>Description</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+
+        <tbody>
+
+          {products.map((item) => (
+
+            <tr key={item.id}>
+
+              <td>{item.id}</td>
+
+              <td>
+                <img
+                  src={`${BASE_URL}/uploads/${item.image}`}
+                  alt={item.title}
+                  width="60"
+                />
+              </td>
+
+              <td>{item.title}</td>
+
+              <td>₹ {item.price}</td>
+
+              <td>{item.description}</td>
+
+              <td>
+
+                <button
+                  onClick={() =>
+                    handleDelete(item.id,"product")
+                  }
+                >
+                  Delete
+                </button>
+
+              </td>
+
+            </tr>
+
+          ))}
+
+        </tbody>
+
+      </table>
 
     </div>
-  );
+
+  )}
+
+  {/* BOOKINGS TABLE */}
+
+  {activeSection === "bookings" && (
+
+    <div className="details-section">
+
+      <h2>Bookings</h2>
+
+      <table>
+
+        <thead>
+
+          <tr>
+            <th>ID</th>
+            <th>Product</th>
+            <th>Customer</th>
+            <th>Email</th>
+            <th>Phone</th>
+            <th>Address</th>
+            <th>Quantity</th>
+            <th>Total</th>
+            <th>Payment ID</th>
+            <th>Date</th>
+          </tr>
+
+        </thead>
+
+        <tbody>
+
+          {bookings.map((item) => (
+
+            <tr key={item.id}>
+
+              <td>{item.id}</td>
+              <td>{item.product_name}</td>
+              <td>{item.customer_name}</td>
+              <td>{item.email}</td>
+              <td>{item.phone}</td>
+              <td>{item.address}</td>
+              <td>{item.quantity}</td>
+              <td>₹ {item.amount}</td>
+              <td>{item.payment_id}</td>
+
+             <td>
+{item.created_at
+? new Date(item.created_at).toLocaleString("en-IN")
+: "-"}
+</td>
+
+            </tr>
+
+          ))}
+
+        </tbody>
+
+      </table>
+
+    </div>
+
+  )}
+
+  {/* ADD PRODUCT */}
+
+  {activeSection === "addProduct" && (
+
+    <div className="product-form-section">
+
+      <h2>Add Product</h2>
+
+      {success && (
+        <div className="success-msg">
+          Product Added Successfully
+        </div>
+      )}
+
+      <form onSubmit={handleAddProduct}>
+
+        <input
+          type="text"
+          name="title"
+          placeholder="Product Title"
+          value={newProduct.title}
+          onChange={handleChange}
+          required
+        />
+
+        <input
+          type="number"
+          name="price"
+          placeholder="Price"
+          value={newProduct.price}
+          onChange={handleChange}
+          required
+        />
+
+        <textarea
+          name="description"
+          placeholder="Description"
+          value={newProduct.description}
+          onChange={handleChange}
+          required
+        />
+
+        <input
+          type="file"
+          name="image"
+          accept="image/*"
+          onChange={handleChange}
+          required
+        />
+
+        {preview && (
+          <img src={preview} alt="Preview" width="100" />
+        )}
+
+        <button type="submit">
+          Add Product
+        </button>
+
+      </form>
+
+    </div>
+
+  )}
+
+</div>
+
+
+);
+
 };
 
 export default AdminDashboard;
