@@ -62,7 +62,7 @@ const Products = () => {
                     navigate(`/product/${product.id}`);
                   }}
                 >
-                  Pre Booking Now
+                  Pre Book Now
                 </button>
 
               </div>
