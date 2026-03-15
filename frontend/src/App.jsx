@@ -11,6 +11,10 @@ import PreBooking from "./components/PreBooking";
 import AdminDashboard from "./components/AdminDashboard";
 import Products from "./components/Products";
 import PaymentSuccess from "./components/PaymentSuccess";
+import PrivacyPolicy from "./pages/PrivacyPolicy";
+import RefundPolicy from "./pages/RefundPolicy";
+import Terms from "./pages/Terms";
+import Contact from "./pages/Contactpayment";
 
 function App() {
   return (
@@ -30,6 +34,10 @@ function App() {
           element={<AdminDashboard />}
         />
       </Routes>
+      <Route path="/privacy-policy" element={<PrivacyPolicy />} />
+<Route path="/refund-policy" element={<RefundPolicy />} />
+<Route path="/terms" element={<Terms />} />
+<Route path="/contact" element={<Contact />} />
     </Router>
   );
 }
