@@ -33,11 +33,12 @@ function App() {
           path="/admin123AvhfGrsFouTRseoPWytrsgfrhiokb"
           element={<AdminDashboard />}
         />
-      </Routes>
-      <Route path="/privacy-policy" element={<PrivacyPolicy />} />
+        <Route path="/privacy-policy" element={<PrivacyPolicy />} />
 <Route path="/refund-policy" element={<RefundPolicy />} />
 <Route path="/terms" element={<Terms />} />
 <Route path="/contact" element={<Contact />} />
+      </Routes>
+      
     </Router>
   );
 }
