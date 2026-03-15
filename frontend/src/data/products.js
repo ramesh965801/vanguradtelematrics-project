@@ -4,7 +4,7 @@ const products = [
   {
     id: 1,
     title: "Vehicle Accident Tracker",
-    price: 699,
+    price: 4999,
     description:
       "Vehicle accident trackers in India utilize the Integrated Road Accident Database (iRAD) system.",
     image: product1
