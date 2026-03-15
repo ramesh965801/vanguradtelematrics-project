@@ -14,7 +14,7 @@ import PaymentSuccess from "./components/PaymentSuccess";
 import PrivacyPolicy from "./pages/PrivacyPolicy";
 import RefundPolicy from "./pages/RefundPolicy";
 import Terms from "./pages/Terms";
-import Contact from "./pages/Contactpayment";
+import Contact from "./pages/Contact";
 
 function App() {
   return (
