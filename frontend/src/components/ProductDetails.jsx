@@ -102,7 +102,7 @@ const ProductDetails = () => {
       display: "inline-block"
     }}
   >
-    ₹699
+    ₹4999
   </span>
 </p>
 
